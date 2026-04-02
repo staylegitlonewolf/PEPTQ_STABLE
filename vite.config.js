@@ -4,9 +4,12 @@ import react from '@vitejs/plugin-react'
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
   const isBeta = mode === 'beta'
+  const isPages = mode === 'pages'
 
   return {
-    base: isBeta ? './' : '/',
+    // For GitHub Pages (project pages), a relative base is required.
+    // Keep stable builds at `/` by default, but allow `--mode pages` to target Pages.
+    base: (isBeta || isPages) ? './' : '/',
     plugins: [react()],
     build: {
       outDir: isBeta ? 'BETA_WEBSITE_ONLY_FOLDER' : 'dist',

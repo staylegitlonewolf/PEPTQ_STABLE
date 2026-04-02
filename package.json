@@ -10,6 +10,7 @@
     "beta": "node -e \"require('fs').rmSync('node_modules/.vite',{recursive:true,force:true})\" && vite --mode beta --host 127.0.0.1 --port 5174 --force",
     "build": "vite build",
     "build:beta": "vite build --mode beta",
+    "build:pages": "vite build --mode pages",
     "lint": "eslint .",
     "preview": "vite preview --host 127.0.0.1 --port 4173 --strictPort",
     "test": "vitest run",
