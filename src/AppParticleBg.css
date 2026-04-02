@@ -1,0 +1,42 @@
+/* Global particle background */
+.app-particle-bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.app-particle {
+  position: absolute;
+  border-radius: 50%;
+  bottom: -10vh;
+  opacity: 0.26;
+  background: radial-gradient(circle at 35% 35%, rgba(74, 163, 255, 0.78), rgba(29, 78, 216, 0.22) 62%, rgba(255, 255, 255, 0) 100%);
+  animation: particleMove linear infinite;
+  filter: blur(0.2px);
+}
+
+html.dark .app-particle {
+  opacity: 0.22;
+  background: radial-gradient(circle at 35% 35%, rgba(96, 165, 250, 0.5), rgba(30, 64, 175, 0.2) 62%, rgba(10, 10, 15, 0) 100%);
+}
+
+@keyframes particleMove {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.12;
+  }
+  60% {
+    opacity: 0.32;
+  }
+  100% {
+    transform: translate3d(0, -120vh, 0) scale(1.18);
+    opacity: 0.05;
+  }
+}
+
+html.a11y-reduced-motion .app-particle {
+  animation: none !important;
+  opacity: 0.12;
+}

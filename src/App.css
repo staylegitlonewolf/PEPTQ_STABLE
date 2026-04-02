@@ -1,0 +1,215 @@
+@keyframes border-travel {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.request-btn-laser {
+  position: relative;
+  overflow: hidden;
+  z-index: 0;
+  transition: all 0.3s ease;
+}
+
+.request-btn-laser::before {
+  content: '';
+  position: absolute;
+  z-index: 2;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: conic-gradient(
+    transparent 0deg,
+    #ff7300 0deg 60deg,
+    transparent 60deg 360deg
+  );
+  animation: border-travel 2.5s linear infinite;
+  border-radius: 9999px;
+  pointer-events: none;
+  box-shadow: 0 0 12px 2px #ff7300aa;
+}
+
+.request-btn-laser::after {
+  content: '';
+  position: absolute;
+  z-index: 3;
+  left: 3px;
+  top: 3px;
+  background: #ff7300;
+  width: calc(100% - 6px);
+  height: calc(100% - 6px);
+  border-radius: 9999px;
+}
+
+.request-btn-laser:hover {
+  box-shadow: 0 0 24px 8px rgba(255, 115, 0, 0.5);
+  transform: scale(1.05);
+}
+@keyframes laser-glow {
+  0% {
+    box-shadow: 0 0 0 0 #ff7300, 0 0 0 0 #ff7300;
+    border-color: #ff7300;
+    opacity: 0.7;
+  }
+  20% {
+    box-shadow: 0 0 12px 4px #ff7300, 0 0 24px 8px #ff7300;
+    border-color: #ff7300;
+    opacity: 1;
+  }
+  50% {
+    box-shadow: 0 0 24px 8px #ff7300, 0 0 48px 16px #ff7300;
+    border-color: #ff7300;
+    opacity: 1;
+  }
+  80% {
+    box-shadow: 0 0 12px 4px #ff7300, 0 0 24px 8px #ff7300;
+    border-color: #ff7300;
+    opacity: 1;
+  }
+  100% {
+    box-shadow: 0 0 0 0 #ff7300, 0 0 0 0 #ff7300;
+    border-color: #ff7300;
+    opacity: 0.7;
+  }
+}
+
+.animate-laser-glow {
+  animation: laser-glow 3s linear infinite;
+  box-shadow: 0 0 24px 8px #ff7300, 0 0 48px 16px #ff7300;
+  border-color: #ff7300 !important;
+  opacity: 0.8;
+  transition: opacity 0.3s;
+}
+#root {
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+.pb-safe {
+  padding-bottom: 16px;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.pt-safe {
+  padding-top: env(safe-area-inset-top);
+}
+
+.sticky-bottom-action-bar {
+  position: sticky;
+  bottom: 0;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  border-top: 1px solid #e5e7eb;
+  z-index: 50;
+  padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
+}
+
+.dark .sticky-bottom-action-bar {
+  background: rgba(31, 41, 55, 0.95);
+  border-top-color: #374151;
+}
+
+.mobile-action-label-compact {
+  display: none;
+}
+
+@media (max-height: 400px) and (orientation: landscape) {
+  .sticky-bottom-action-bar {
+    padding-top: 4px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: calc(4px + env(safe-area-inset-bottom));
+  }
+
+  .sticky-bottom-actions-row {
+    gap: 8px;
+  }
+
+  .sticky-bottom-action-bar .primary-action-btn {
+    height: 36px !important;
+    min-height: 36px !important;
+    font-size: 12px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+  }
+
+  .mobile-action-label-full {
+    display: none;
+  }
+
+  .mobile-action-label-compact {
+    display: inline;
+  }
+}
+
+@media (max-width: 320px) {
+  .settings-panel {
+    order: 2;
+    width: 100%;
+  }
+
+  .settings-panel .control-group,
+  .settings-panel button,
+  .settings-panel select,
+  .settings-panel input,
+  .primary-action-btn {
+    min-height: 44px;
+  }
+
+  .tab-navigation-row {
+    display: flex;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .preview-mode-toggle {
+    width: 100%;
+    margin: 10px 0;
+  }
+}
