@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { CheckCircle2 } from 'lucide-react';
 import { submitWaitlistEntry } from '../services/waitlistService';
 import { useAccessibility } from '../context/AccessibilityContext';
-import { fetchSiteLayout, getLocalSiteLayout } from '../services/orderService';
+import { fetchSiteLayout, getAssetUrl, getLocalSiteLayout } from '../services/orderService';
 import {
   COMING_SOON_DEFAULTS,
   COMING_SOON_SITE_SECTIONS,
@@ -47,22 +47,23 @@ function ComingSoonPage() {
   const siteLayoutMap = buildSiteLayoutMap(siteLayoutEntries);
 
   const text = {
-    title: es ? 'Unete a la lista de espera para acceso temprano' : 'Join the waitlist for early access',
+    titleLead: es ? 'Unete a la' : 'Join the',
+    titleAccent: es ? 'lista de espera' : 'waitlist',
     subtitle: es
-      ? 'Accede a compuestos de investigacion verificados con acceso prioritario a nuestro registro validado por HPLC.'
-      : 'Access Verified Research Compounds for priority access to our HPLC-verified compound registry.',
-    batchTag: es ? 'Lote 001: Verificado y Listo para Investigacion.' : 'Batch 001: Verified & Ready for Research.',
+      ? 'Accede a compuestos de investigacion verificados a traves de nuestro registro validado por HPLC.'
+      : 'Access verified research compounds through our HPLC-verified compound registry.',
+    heroRibbon: es ? 'Proximamente' : 'Coming soon',
     fullName: es ? 'Nombre completo' : 'Full name',
-    email: es ? 'Ingresa correo para acceso temprano' : 'Enter email for early access',
+    email: es ? 'Ingresa tu correo para unirte a la lista' : 'Enter email to join the waitlist',
     phone: es ? 'Numero de telefono' : 'Phone number',
     notes: es ? 'Notas (opcional)' : 'Notes (optional)',
-    termsLead: es ? 'Al solicitar acceso, aceptas nuestros' : 'By requesting access, you agree to our',
+    termsLead: es ? 'Al unirte a la lista, aceptas nuestros' : 'By joining the waitlist, you agree to our',
     terms: es ? 'Terminos y Condiciones' : 'Terms & Conditions',
     privacy: es ? 'Politica de Privacidad' : 'Privacy Policy',
     consent: es
       ? 'Confirmo que mi informacion es correcta y doy permiso a PEPTQ para notificarme sobre actualizaciones de acceso al lanzamiento.'
       : 'I confirm my information is accurate and I give PEPTQ permission to notify me about live launch access updates.',
-    submit: es ? 'Solicitar Acceso Temprano' : 'Request Early Access',
+    submit: es ? 'Unirme a la Lista' : 'Join Waitlist',
     submitting: es ? 'Enviando...' : 'Submitting...',
     aboutBtn: es ? 'Sobre la Lista de Espera' : 'About Waitlist',
     trustSignals: [
@@ -74,8 +75,8 @@ function ComingSoonPage() {
       ? 'PEPTQ usa envios seguros y cifrado para proteger tu privacidad. Tus datos se usan solo para la lista de espera y actualizaciones de acceso.'
       : 'PEPTQ uses secure submissions and encryption to ensure your privacy. Contact details are used only for waitlist and launch-access updates.',
     footerNote: es
-      ? '(c) 2026 PEPTQ. Todos los derechos reservados. | Ordenes institucionales disponibles solo para cuentas de investigacion aprobadas.'
-      : '(c) 2026 PEPTQ. All rights reserved. | Institutional ordering available for approved research accounts only.',
+      ? '© 2026 PEPTQ. Todos los derechos reservados. | Ordenes institucionales disponibles solo para cuentas de investigacion aprobadas.'
+      : '© 2026 PEPTQ. All rights reserved. | Institutional ordering available for approved research accounts only.',
     footerPayment: es ? 'Politica de Pago' : 'Payment Policy',
     footerAbout: es ? 'Acerca de' : 'About',
     successTag: es ? 'Lista de Espera Confirmada' : 'Waitlist Confirmed',
@@ -85,10 +86,10 @@ function ComingSoonPage() {
       : 'We will notify verified researchers first when access opens.',
     close: es ? 'Cerrar' : 'Close',
     aboutTag: es ? 'Sobre la Lista de Espera' : 'About The Waitlist',
-    aboutTitle: es ? 'Como Funciona el Acceso Temprano' : 'How Early Access Works',
+    aboutTitle: es ? 'Como Funciona la Lista de Espera' : 'How The Waitlist Works',
     aboutBody: es
-      ? 'La lista de espera reserva tu lugar para notificaciones de acceso. Los envios se revisan en orden y se prioriza el uso de investigacion verificado. Despues de envio y aprobacion, puedes acceder con tu correo o telefono aprobado y tu PIN del portal.'
-      : 'The waitlist reserves your place for launch access notifications. Submissions are reviewed in order and prioritized for verified research use. After submission and approval, you can access the portal using your approved email or phone number and your portal PIN.',
+      ? 'La lista de espera reserva tu lugar para notificaciones del lanzamiento. Los envios se revisan en orden y se prioriza el uso de investigacion verificado. Despues de la aprobacion, puedes acceder con tu correo o telefono y tu PIN del portal.'
+      : 'The waitlist reserves your place for launch notifications. Submissions are reviewed in order and prioritized for verified research use. After approval, you can access the portal using your email or phone and your portal PIN.',
     aboutNotice: es
       ? 'PEPTQ es un proveedor de productos quimicos y no es una farmacia de compuestos o instalacion de compuestos bajo la Seccion 503A de la FDA, y no es una instalacion de subcontratacion bajo la Seccion 503B. Materiales restringidos a uso de laboratorio.'
       : 'PEPTQ is a chemical supplier and is not a compounding pharmacy or chemical compounding facility under Section 503A of the Federal Food, Drug, and Cosmetic Act, and is not an outsourcing facility under Section 503B. All materials are restricted to qualified laboratory, research, and analytical use.',
@@ -112,11 +113,8 @@ function ComingSoonPage() {
   };
 
   const heroProductImage = toEmbeddableGoogleDriveUrl(
-    getSiteLayoutText(
-      siteLayoutMap,
-      COMING_SOON_SITE_SECTIONS.HERO_IMAGE,
-      COMING_SOON_DEFAULTS.heroImage
-    )
+    getSiteLayoutText(siteLayoutMap, COMING_SOON_SITE_SECTIONS.HERO_IMAGE, '')
+    || getAssetUrl('comingsoon', COMING_SOON_DEFAULTS.heroImage)
   );
 
   const handleJoinWaitlist = async (event) => {
@@ -152,11 +150,12 @@ function ComingSoonPage() {
 
   return (
     <section className="relative min-h-screen overflow-hidden bg-transparent transition-colors duration-300">
-      <div className="mx-auto max-w-7xl px-6 py-12 md:py-20">
-        <div className="grid w-full gap-8 rounded-3xl border-2 border-brand-navy/15 bg-white/88 p-8 shadow-2xl dark:border-white/10 dark:bg-white/5 sm:p-12 lg:grid-cols-[1.1fr_0.9fr]">
+      <div className="mx-auto max-w-7xl px-4 py-12 md:px-6 md:py-20">
+        <div className="grid w-full gap-8 rounded-3xl border-2 border-brand-navy/15 bg-white/88 p-6 shadow-2xl dark:border-white/10 dark:bg-white/5 sm:p-12 lg:grid-cols-[1.1fr_0.9fr]">
           <div>
-            <h4 className="mt-6 max-w-3xl text-4xl font-black leading-tight text-[#112e57] dark:text-white sm:text-6xl">
-              {text.title}
+            <h4 className="mt-6 max-w-3xl break-words text-[clamp(2rem,6vw,3.75rem)] font-black leading-[1.05] text-[#112e57] dark:text-white sm:text-6xl">
+              <span className="inline">{text.titleLead} </span>
+              <span className="inline text-[#ff7a00]">{text.titleAccent}</span>
             </h4>
 
             <p className="mt-5 max-w-2xl text-base leading-relaxed text-[#28415f] dark:text-gray-300 sm:text-lg">
@@ -164,18 +163,21 @@ function ComingSoonPage() {
             </p>
 
             <div className="mt-4 flex items-center justify-center lg:hidden">
-              <img
-                src={heroProductImage}
-                alt="PEPTQ hero product"
-                width="1024"
-                height="1024"
-                className="relative mx-auto h-72 w-auto object-contain drop-shadow-[0_26px_38px_rgba(0,0,0,0.35)] sm:h-80"
-              />
+              <div className="relative inline-block">
+                <img
+                  src={heroProductImage}
+                  alt="PEPTQ hero product"
+                  width="1024"
+                  height="1024"
+                  className="relative mx-auto h-72 w-auto object-contain drop-shadow-[0_26px_38px_rgba(0,0,0,0.35)] sm:h-80"
+                />
+              </div>
             </div>
-
-            <p className="mt-3 text-sm font-black uppercase tracking-[0.12em] text-[#ff7a00]">
-              {text.batchTag}
-            </p>
+            <div className="mt-3 flex justify-center lg:hidden">
+              <div className="inline-flex rounded-full border border-white/20 bg-[#ff7a00] px-4 py-1 text-[11px] font-black uppercase tracking-[0.14em] text-white shadow-lg">
+                {text.heroRibbon}
+              </div>
+            </div>
 
             <form className="mt-9 max-w-xl" onSubmit={handleJoinWaitlist}>
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -222,7 +224,7 @@ function ComingSoonPage() {
                 <Link to="/terms" className="underline decoration-[#ff7a00]/60 underline-offset-2 transition hover:text-brand-orange">
                   {text.terms}
                 </Link>
-                {' '}and{' '}
+                {' '}{es ? 'y' : 'and'}{' '}
                 <Link to="/privacy" className="underline decoration-[#ff7a00]/60 underline-offset-2 transition hover:text-brand-orange">
                   {text.privacy}
                 </Link>
@@ -257,9 +259,9 @@ function ComingSoonPage() {
 
               <div className="mt-4 grid gap-2 sm:grid-cols-3">
                 {text.trustSignals.map((item) => (
-                  <p key={item} className="inline-flex items-center gap-2 text-[11px] font-bold text-[#28415f] dark:text-gray-200">
-                    <CheckCircle2 size={14} className="text-[#ff7a00]" />
-                    {item}
+                  <p key={item} className="flex items-start gap-2 text-[11px] font-bold text-[#28415f] dark:text-gray-200">
+                    <CheckCircle2 size={14} className="mt-[1px] shrink-0 text-[#ff7a00]" />
+                    <span className="min-w-0 break-words leading-snug">{item}</span>
                   </p>
                 ))}
               </div>
@@ -270,31 +272,22 @@ function ComingSoonPage() {
               <p className="mt-3 text-[11px] font-semibold text-[#36506c]/85 dark:text-gray-300/90">
                 {text.secureNote}
               </p>
-              <div className="mt-6 text-center">
-                <p className="mx-auto max-w-lg text-center text-xs font-semibold text-[#36506c]/80 dark:text-gray-300/80">
-                  {text.footerNote}
-                </p>
-                <div className="mt-3 flex flex-wrap items-center justify-center gap-3 text-xs text-[#36506c]/75 dark:text-gray-300/75">
-                  <Link to="/terms" className="transition hover:text-brand-orange">{text.terms}</Link>
-                  <span>|</span>
-                  <Link to="/privacy" className="transition hover:text-brand-orange">{text.privacy}</Link>
-                  <span>|</span>
-                  <Link to="/payment-policy" className="transition hover:text-brand-orange">{text.footerPayment}</Link>
-                  <span>|</span>
-                  <Link to="/about" className="transition hover:text-brand-orange">{text.footerAbout}</Link>
-                </div>
-              </div>
             </form>
           </div>
 
-          <div className="hidden items-center justify-center lg:flex">
-            <img
-              src={heroProductImage}
-              alt="PEPTQ hero product"
-              width="1024"
-              height="1024"
-              className="relative mx-auto h-88 w-auto object-contain drop-shadow-[0_26px_38px_rgba(0,0,0,0.35)] md:h-112 lg:h-136 xl:h-152"
-            />
+          <div className="hidden flex-col items-center justify-center lg:flex">
+            <div className="relative inline-block">
+              <img
+                src={heroProductImage}
+                alt="PEPTQ hero product"
+                width="1024"
+                height="1024"
+                className="relative mx-auto h-88 w-auto object-contain drop-shadow-[0_26px_38px_rgba(0,0,0,0.35)] md:h-112 lg:h-136 xl:h-152"
+              />
+            </div>
+            <div className="mt-4 inline-flex rounded-full border border-white/20 bg-[#ff7a00] px-4 py-1 text-[11px] font-black uppercase tracking-[0.14em] text-white shadow-lg">
+              {text.heroRibbon}
+            </div>
           </div>
         </div>
       </div>

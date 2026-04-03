@@ -1,4 +1,4 @@
-﻿
+
   import { useState } from 'react';
   // eslint-disable-next-line no-unused-vars
   import { motion, AnimatePresence } from 'framer-motion';
@@ -18,6 +18,7 @@ const ApplyPage = () => {
   // Client final additions (insert exactly as written; do not merge/rewrite).
   const ageRequirementNote = 'Applicants must be 21 years of age or older.';
   const proceedAcknowledgment = 'By proceeding, you confirm that you are at least 21 years of age, are a qualified purchaser acquiring materials strictly for lawful laboratory research use, understand associated risks, and agree to all Terms and Conditions.';
+
   const toAbsoluteImageUrl = (imagePath) => {
     if (!imagePath) return '';
     try {
@@ -320,6 +321,16 @@ const ApplyPage = () => {
                       <button type="submit" disabled={isSubmitting} className="w-full bg-brand-orange hover:bg-[#b84600] text-white font-black py-5 rounded-xl transition-all shadow-xl hover:shadow-brand-orange/20 transform hover:-translate-y-1 disabled:opacity-50 uppercase tracking-widest">
                         {isSubmitting ? text.processing : text.apply}
                       </button>
+                      <p className="text-center text-[11px] font-semibold text-brand-navy/60 dark:text-gray-400 leading-relaxed">
+                        {es
+                          ? 'El envio no garantiza aprobacion. Todas las solicitudes estan sujetas a revision de cumplimiento y verificacion institucional.'
+                          : 'Submission does not guarantee approval. All applications are subject to compliance review and institutional verification.'}
+                      </p>
+                      <p className="text-center text-[11px] font-semibold text-brand-navy/60 dark:text-gray-400 leading-relaxed">
+                        {es
+                          ? 'Todos los materiales estan destinados solo para uso de investigacion en laboratorio.'
+                          : 'All materials are intended for laboratory research use only.'}
+                      </p>
                       {!BETA_MODE && (
                         <div className="text-center">
                           <Link to="/catalog" className="text-xs font-black uppercase tracking-widest text-brand-navy/65 dark:text-gray-300 underline underline-offset-2 hover:text-brand-orange">
@@ -371,11 +382,11 @@ const ApplyPage = () => {
               },
               {
                 q: es ? 'Terminos de pago?' : 'Payment Terms?',
-                a: es ? 'Los pagos se procesan por factura via ACH o Zelle despues de aprobacion de cumplimiento.' : 'Payments are invoice-based via ACH or Zelle after compliance approval.',
+                a: es ? 'Los pagos se procesan via metodos de factura aprobados (ACH o Zelle) despues de verificacion de cuenta y aprobacion de cumplimiento.' : 'Payments are processed via approved invoice methods (ACH or Zelle) following account verification and compliance approval.',
               },
               {
                 q: es ? 'Internacional?' : 'International?',
-                a: es ? 'Las ordenes se evaluan por region segun cumplimiento y viabilidad.' : 'Orders are evaluated per region based on compliance and feasibility.',
+                a: es ? 'Las ordenes internacionales se revisan caso por caso sujeto a cumplimiento regulatorio y viabilidad logistica.' : 'International orders are reviewed on a case-by-case basis subject to regulatory compliance and logistics feasibility.',
               },
             ].map((faq, i) => (
               <div key={i} className="bg-white dark:bg-white/5 border border-brand-navy/10 dark:border-white/10 rounded-2xl p-6 hover:border-brand-orange/40 transition-colors">
@@ -391,4 +402,3 @@ const ApplyPage = () => {
 }
 
 export default ApplyPage;
-

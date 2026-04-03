@@ -6,7 +6,7 @@ import { getLocalSystemSettings } from '../services/orderService';
 
 function TermsPage() {
   const { language = 'en' } = useAccessibility();
-  const { role } = useAuth();
+  const { role, isApproved } = useAuth();
   const navigate = useNavigate();
   const es = language === 'es';
 
@@ -162,21 +162,21 @@ function TermsPage() {
     {
       title: 'Indemnification',
       points: [
-        'You agree to indemnify PEPTQ for claims arising from misuse or non-compliance.',
+        'You agree to indemnify and hold harmless PEPTQ for claims arising from misuse or non-compliance.',
       ],
     },
     {
       title: 'Compliance Responsibility',
       points: [
-        'You are responsible for compliance with applicable laws and regulations.',
-        'You are responsible for safe storage, handling, and use.',
+        'You are responsible for compliance with all applicable federal, state, and local laws and regulations.',
+        'You are responsible for safe storage, handling, and authorized use.',
       ],
     },
     {
       title: 'Communications & Data Use',
       points: [
-        'Information submitted through forms is used for verification, waitlist, and support intake.',
-        'PEPTQ does not sell information submitted through forms.',
+        'Contact details submitted through PEPTQ forms are used for access verification, waitlist updates, and support.',
+        'PEPTQ does not sell submitted contact data.',
         'See the Privacy Policy for details.',
       ],
     },
@@ -197,7 +197,7 @@ function TermsPage() {
       title: 'Modifications to Terms',
       points: [
         'PEPTQ may update these terms from time to time.',
-        'Continued use of the site indicates acceptance of current terms.',
+        'Continued use of the site indicates acceptance of the current terms.',
       ],
     },
   ];
@@ -210,7 +210,7 @@ function TermsPage() {
             <div className="xl:w-5/12 space-y-8">
               <div className="space-y-4">
                 <h1 className="text-4xl md:text-5xl lg:text-7xl font-montserrat font-black text-brand-navy dark:text-white uppercase tracking-tight leading-tight">
-                  {es ? 'Terminos y' : 'Terms &'} <span className="text-brand-orange block">{es ? 'Condiciones' : 'Conditions'}</span>
+                  {es ? 'Terminos y' : 'Terms'} <span className="text-brand-orange block">{es ? 'Condiciones' : '& Conditions'}</span>
                 </h1>
 
                 {showRequestAccess && (
@@ -220,7 +220,7 @@ function TermsPage() {
                       onClick={() => navigate('/apply')}
                       className="inline-flex items-center gap-2 rounded-full bg-brand-orange px-6 py-3 text-sm font-black uppercase tracking-widest text-white shadow-lg transition hover:bg-[#e06d00]"
                     >
-                      {es ? 'Solicitar Acceso' : 'Request Access'}
+                      {es ? 'Solicitar Acceso de Investigacion' : 'Request Research Access'}
                       <ArrowRight size={16} />
                     </button>
                   </div>
@@ -228,7 +228,7 @@ function TermsPage() {
 
                 <p className="text-lg md:text-xl text-brand-navy/70 dark:text-gray-400 font-medium leading-relaxed">
                   {es
-                    ? 'El acceso institucional de investigacion esta gobernado por restricciones de uso, verificacion y responsabilidades de cumplimiento.'
+                    ? 'El acceso institucional de investigacion esta regido por restricciones claras de uso, requisitos de verificacion y responsabilidades de cumplimiento.'
                     : 'Institutional research access is governed by clear usage restrictions, verification requirements, and compliance responsibilities.'}
                 </p>
 

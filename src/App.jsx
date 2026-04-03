@@ -1,5 +1,5 @@
 ﻿import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link, NavLink, Navigate, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, NavLink, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { Sun, Moon, Search, Users, ShoppingCart, ChevronLeft, ChevronRight, Accessibility, ShieldCheck, Menu, X } from 'lucide-react';
 import { useTheme } from './context/ThemeContext';
 import { useAuth } from './context/AuthProvider';
@@ -23,7 +23,7 @@ import OrderHistoryPage from './pages/OrderHistoryPage';
 import ProfileSettingsPage from './pages/ProfileSettingsPage';
 import DocumentsPage from './pages/DocumentsPage';
 import VerifyPage from './pages/VerifyPage';
-import CoaLibraryPage from './pages/CoaLibraryPage';
+import CoaHubPage from './pages/CoaHubPage';
 import QuickAccessibilityPanel from './components/QuickAccessibilityPanel';
 import AppParticleBackground from './components/AppParticleBackground';
 import { fetchSiteLayout, fetchAssets, getLocalOwnerSettings, getAssetUrl, getSiteLayoutValue } from './services/orderService';
@@ -208,11 +208,6 @@ const quickSetGoogleLanguage = (lang) => {
   window.setTimeout(hideGoogleTranslateChrome, 750);
 };
 
-function CoaLotRedirect() {
-  const { lotId } = useParams();
-  if (!lotId) return <Navigate to="/coa" replace />;
-  return <Navigate to={`/verify/${lotId}`} replace />;
-}
 function useIsMobileViewport() {
   const [isMobile, setIsMobile] = useState(() => {
     if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') {
@@ -1501,8 +1496,8 @@ function AppLayout() {
                   <Route path="/profile/:name" element={<Navigate to="/apply" replace />} />
                 </>
               )}
-              <Route path="/coa" element={<CoaLibraryPage />} />
-              <Route path="/coa/:lotId" element={<CoaLotRedirect />} />
+              <Route path="/coa" element={<CoaHubPage />} />
+              <Route path="/coa/:lotId" element={<VerifyPage />} />
               <Route path="/verify/:lotId" element={<VerifyPage />} />
               {!BETA_MODE && (
                 <>

@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from 'react';
-import { ShieldCheck, Package, Plus, Minus, Trash2, Sparkles, CheckCircle2 } from 'lucide-react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { ArrowLeft, Plus, Minus, Trash2, Sparkles, CheckCircle2, ShoppingBag } from 'lucide-react';
 import { submitPreorderRequest } from '../services/orderService';
 import { useAccessibility } from '../context/AccessibilityContext';
 import { getCatalogForRole } from '../services/catalogService';
@@ -7,6 +7,7 @@ import { useAuth } from '../context/AuthProvider';
 
 const inputClasses = 'w-full px-4 py-3 border border-brand-navy/25 dark:border-white/10 rounded-xl bg-white dark:bg-white/5 text-brand-navy dark:text-gray-100 placeholder:text-brand-navy/50 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-brand-orange/40 focus:border-brand-orange transition-all';
 const MAX_VISIBLE_CART_ITEMS = 5;
+const CART_ITEM_GAP_PX = 12;
 
 const DEFAULT_PURITY = 'Purity ≥99% (HPLC-verified)';
 const SKU_CATALOG = [
@@ -53,6 +54,9 @@ const PreorderPage = () => {
   const [isLoadingCatalog, setIsLoadingCatalog] = useState(false);
   const [acknowledged, setAcknowledged] = useState(false);
   const [selectedHandle, setSelectedHandle] = useState('');
+  const [cartListMaxHeight, setCartListMaxHeight] = useState('');
+  const [isCartDrawerOpen, setIsCartDrawerOpen] = useState(false);
+  const cartItemRefs = useRef([]);
 
   const text = {
     title: es ? 'Preorden' : 'Pre-Order',
@@ -64,6 +68,20 @@ const PreorderPage = () => {
     success: (count) => es
       ? `Preorden enviada para ${count} item(s). Te contactaremos pronto.`
       : `Pre-order submitted for ${count} item(s). We will contact you soon.`,
+    stepOne: es ? 'Paso 1 · Selecciona SKU' : 'Step 1 · Select SKUs',
+    stepTwo: es ? 'Paso 2 · Revisa y envia' : 'Step 2 · Review & submit',
+    cartButtonLabel: es ? 'Abrir carrito de preorden' : 'Open pre-order cart',
+    cartButtonHint: es ? 'Selecciona SKU para continuar' : 'Select SKUs to continue',
+    cartButtonReady: es ? 'Revisa carrito y continua al formulario' : 'Review cart and continue to the form',
+    cartDrawerTitle: es ? 'Finaliza tu preorden' : 'Complete your pre-order',
+    cartDrawerSubtitle: es
+      ? 'Confirma tus articulos y agrega tus datos antes de enviar.'
+      : 'Confirm your items and add your details before submitting.',
+    backToCatalog: es ? 'Volver a SKU' : 'Back to SKUs',
+    cartEmptyState: es ? 'Agrega SKU antes de abrir el formulario.' : 'Add SKUs before opening the form.',
+    policyNotice: es
+      ? 'Las preordenes no garantizan reserva; el cumplimiento sigue el orden de llegada y disponibilidad. Recibiras seguimiento manual con disponibilidad y siguientes pasos.'
+      : 'Pre-orders are not guaranteed reservations; fulfillment follows arrival order and stock readiness. You will receive manual follow-up with availability and next steps.',
     labels: {
       name: es ? 'Nombre completo' : 'Full name',
       phone: es ? 'Telefono' : 'Phone',
@@ -71,10 +89,13 @@ const PreorderPage = () => {
       email: es ? 'Correo aprobado *' : 'Approved email *',
       cart: es ? 'Carrito de preorden' : 'Pre-order cart',
     },
-    emptyCart: es ? 'Selecciona un SKU para preordenar.' : 'Select an SKU to preorder.',
   };
 
   const catalogFallback = useMemo(() => SKU_CATALOG, []);
+  const cartItemCount = cart.reduce((sum, item) => sum + item.qty, 0);
+  const cartPreview = cart.length
+    ? `${cart.slice(0, 2).map((item) => item.title).join(' · ')}${cart.length > 2 ? ` +${cart.length - 2}` : ''}`
+    : '';
 
   const addToCart = (handle) => {
     setSubmitError('');
@@ -136,6 +157,25 @@ const PreorderPage = () => {
     return () => { active = false; };
   }, [role, catalogFallback]);
 
+  useEffect(() => {
+    if (!isCartDrawerOpen || typeof document === 'undefined') return undefined;
+
+    const previousOverflow = document.body.style.overflow;
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        setIsCartDrawerOpen(false);
+      }
+    };
+
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isCartDrawerOpen]);
+
   const updateQty = (handle, delta) => {
     setCart((prev) => prev
       .map((item) => item.handle === handle ? { ...item, qty: Math.max(1, item.qty + delta) } : item)
@@ -188,79 +228,221 @@ const PreorderPage = () => {
     }
   };
 
-  const visibleCart = cart.slice(0, MAX_VISIBLE_CART_ITEMS);
-  const hiddenCount = Math.max(0, cart.length - MAX_VISIBLE_CART_ITEMS);
+  const shouldScrollCart = cart.length > MAX_VISIBLE_CART_ITEMS;
+
+  useLayoutEffect(() => {
+    if (!shouldScrollCart) {
+      setCartListMaxHeight('');
+      return;
+    }
+
+    const visibleNodes = cartItemRefs.current
+      .slice(0, MAX_VISIBLE_CART_ITEMS)
+      .filter(Boolean);
+
+    if (!visibleNodes.length) return;
+
+    const totalHeight = visibleNodes.reduce((sum, node) => sum + node.offsetHeight, 0)
+      + (Math.max(visibleNodes.length - 1, 0) * CART_ITEM_GAP_PX);
+
+    setCartListMaxHeight(`${totalHeight}px`);
+  }, [cart, shouldScrollCart]);
 
   return (
     <div className="min-h-screen bg-transparent transition-colors duration-300">
-      <section className="py-12 md:py-18 px-6">
-        <div className="max-w-6xl mx-auto space-y-10">
-          <div className="grid lg:grid-cols-[1.05fr_0.95fr] gap-10 items-start">
-            <div className="space-y-6">
-              <h1 className="text-4xl md:text-5xl font-montserrat font-black uppercase leading-tight">
-                <span className="text-brand-navy dark:text-white">PRE-</span>
-                <span className="text-brand-orange">ORDER</span>
-              </h1>
-              <p className="text-lg text-brand-navy/75 dark:text-gray-300 font-medium leading-relaxed">
-                {text.subtitle}
-              </p>
+      <section className="px-6 py-12 md:py-18">
+        <div className="mx-auto max-w-6xl space-y-8">
+          <div className="max-w-3xl space-y-5">
+            <span className="inline-flex items-center rounded-full border border-brand-orange/20 bg-brand-orange/10 px-4 py-2 text-[11px] font-black uppercase tracking-[0.22em] text-brand-orange">
+              {text.stepOne}
+            </span>
+            <h1 className="text-4xl font-montserrat font-black uppercase leading-tight md:text-5xl">
+              <span className="text-brand-navy dark:text-white">PRE-</span>
+              <span className="text-brand-orange">ORDER</span>
+            </h1>
+            <p className="text-lg font-medium leading-relaxed text-brand-navy/75 dark:text-gray-300">
+              {text.subtitle}
+            </p>
+            {(submitError || successMessage) && !isCartDrawerOpen && (
+              <div className={`rounded-2xl border px-4 py-3 text-sm font-bold ${submitError ? 'border-brand-orange/30 bg-brand-orange/10 text-brand-orange' : 'border-emerald-200 bg-emerald-50 text-emerald-600 dark:border-emerald-400/30 dark:bg-emerald-500/10 dark:text-emerald-300'}`}>
+                {submitError || successMessage}
+              </div>
+            )}
+          </div>
 
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-[11px] font-black uppercase tracking-widest text-brand-orange ml-1">
-                    {es ? 'Selecciona SKU' : 'Select SKU'}
-                  </span>
-                  <span className="text-[10px] font-black text-brand-orange uppercase tracking-widest flex items-center gap-1">
-                    <Sparkles size={14} /> {cart.reduce((s, i) => s + i.qty, 0)} item(s)
-                  </span>
-                </div>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                  {catalog.map((sku) => {
-                    const inCart = cart.some((item) => item.handle === sku.handle);
-                    const isSelected = selectedHandle === sku.handle || inCart;
-                    return (
-                      <button
-                        key={sku.handle}
-                        type="button"
-                        onClick={() => addToCart(sku.handle)}
-                        className={`text-left relative rounded-xl border border-brand-navy/15 dark:border-white/10 bg-white dark:bg-white/5 hover:border-brand-orange/50 hover:shadow-md transition p-3 ${isSelected ? 'border-brand-orange bg-brand-orange/5 ring-2 ring-brand-orange/25' : ''}`}
-                        disabled={isLoadingCatalog}
-                      >
-                        {isSelected && (
-                          <span
-                            className="absolute top-2 right-2 text-brand-orange"
-                            aria-label="Selected"
-                          >
-                            <CheckCircle2 size={16} />
-                          </span>
-                        )}
-                        <p className="text-sm font-black uppercase tracking-widest text-brand-navy dark:text-brand-orange leading-snug">
-                          {sku.title}
-                        </p>
-                        {sku.strength && (
-                          <p className="text-[11px] font-semibold text-brand-navy/60 dark:text-gray-400 mt-1">
-                            {sku.strength}
-                          </p>
-                        )}
-                        {sku.purity && (
-                          <p className="text-[11px] font-semibold text-brand-navy/60 dark:text-gray-400">
-                            {sku.purity}
-                          </p>
-                        )}
-                      </button>
-                    );
-                  })}
-                </div>
+          <div className="space-y-4">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <span className="ml-1 text-[11px] font-black uppercase tracking-widest text-brand-orange">
+                {es ? 'Selecciona SKU' : 'Select SKU'}
+              </span>
+              <div className="inline-flex items-center gap-2 rounded-full border border-brand-orange/20 bg-white/85 px-3 py-2 text-[10px] font-black uppercase tracking-widest text-brand-orange shadow-sm dark:bg-white/5">
+                <Sparkles size={14} />
+                <span>{cartItemCount} item(s)</span>
               </div>
             </div>
 
-            <form
-              onSubmit={handleSubmit}
-              className="bg-white dark:bg-white/5 border-2 border-brand-navy dark:border-white/10 rounded-3xl p-6 md:p-8 shadow-2xl backdrop-blur-sm space-y-5"
-              style={reduceMotion ? { transition: 'none' } : undefined}
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-4">
+              {catalog.map((sku) => {
+                const inCart = cart.some((item) => item.handle === sku.handle);
+                const isSelected = selectedHandle === sku.handle || inCart;
+                return (
+                  <button
+                    key={sku.handle}
+                    type="button"
+                    onClick={() => addToCart(sku.handle)}
+                    className={`relative rounded-2xl border border-brand-navy/15 bg-white p-4 text-left transition hover:border-brand-orange/50 hover:shadow-md dark:border-white/10 dark:bg-white/5 ${isSelected ? 'border-brand-orange bg-brand-orange/5 ring-2 ring-brand-orange/25' : ''}`}
+                    disabled={isLoadingCatalog}
+                  >
+                    {isSelected && (
+                      <span className="absolute right-3 top-3 text-brand-orange" aria-label="Selected">
+                        <CheckCircle2 size={16} />
+                      </span>
+                    )}
+                    <p className="pr-6 text-sm font-black uppercase tracking-widest leading-snug text-brand-navy dark:text-brand-orange">
+                      {sku.title}
+                    </p>
+                    {sku.strength && (
+                      <p className="mt-2 text-[11px] font-semibold text-brand-navy/60 dark:text-gray-400">
+                        {sku.strength}
+                      </p>
+                    )}
+                    {sku.purity && (
+                      <p className="text-[11px] font-semibold text-brand-navy/60 dark:text-gray-400">
+                        {sku.purity}
+                      </p>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="sticky bottom-20 z-20 pt-2 md:bottom-6">
+            <button
+              type="button"
+              onClick={() => setIsCartDrawerOpen(true)}
+              disabled={!cart.length}
+              className={`mx-auto flex w-full max-w-3xl items-center justify-between gap-4 rounded-2xl border px-4 py-4 text-left shadow-2xl transition-all md:px-5 ${cart.length ? 'border-brand-orange/30 bg-brand-navy text-white hover:-translate-y-0.5 hover:border-brand-orange/60 dark:bg-[#0b1830]' : 'cursor-not-allowed border-brand-navy/10 bg-white/95 text-brand-navy/45 dark:border-white/10 dark:bg-[#0f172a]/95 dark:text-gray-500'}`}
             >
+              <span className="flex min-w-0 items-center gap-3">
+                <span className={`inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl ${cart.length ? 'bg-brand-orange text-white' : 'bg-brand-navy/5 text-brand-navy/40 dark:bg-white/10 dark:text-gray-500'}`}>
+                  <ShoppingBag size={20} />
+                </span>
+                <span className="min-w-0">
+                  <span className={`block text-[11px] font-black uppercase tracking-[0.18em] ${cart.length ? 'text-brand-orange/80' : 'text-brand-orange'}`}>
+                    {text.cartButtonLabel}
+                  </span>
+                  <span className="block truncate text-sm font-bold md:text-base">
+                    {cart.length ? text.cartButtonReady : text.cartButtonHint}
+                  </span>
+                  {cartPreview && (
+                    <span className="block truncate pt-1 text-xs font-semibold text-white/70">
+                      {cartPreview}
+                    </span>
+                  )}
+                </span>
+              </span>
+              <span className={`shrink-0 rounded-full px-3 py-2 text-xs font-black uppercase tracking-[0.14em] ${cart.length ? 'bg-white text-brand-navy' : 'bg-brand-navy/5 text-brand-navy/45 dark:bg-white/10 dark:text-gray-500'}`}>
+                {cartItemCount} item(s)
+              </span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <div className={`fixed inset-0 z-50 ${isCartDrawerOpen ? 'pointer-events-auto' : 'pointer-events-none'}`}>
+        <div
+          className={`absolute inset-0 bg-brand-navy/40 backdrop-blur-[2px] transition-opacity duration-300 ${isCartDrawerOpen ? 'opacity-100' : 'opacity-0'}`}
+          onClick={() => setIsCartDrawerOpen(false)}
+        />
+
+        <aside
+          className={`absolute right-0 top-0 flex h-full w-full max-w-xl flex-col border-l border-brand-navy/10 bg-[#fdfdfd] shadow-2xl transition-transform duration-300 dark:border-white/10 dark:bg-[#0f172a] ${isCartDrawerOpen ? 'translate-x-0' : 'translate-x-full'}`}
+          style={reduceMotion ? { transition: 'none' } : undefined}
+        >
+          <form onSubmit={handleSubmit} className="flex h-full flex-col">
+            <div className="border-b border-brand-navy/10 px-5 py-4 dark:border-white/10 md:px-6">
+              <button
+                type="button"
+                onClick={() => setIsCartDrawerOpen(false)}
+                className="inline-flex items-center gap-2 text-sm font-black uppercase tracking-[0.16em] text-brand-orange transition hover:text-brand-navy dark:hover:text-white"
+              >
+                <ArrowLeft size={16} />
+                {text.backToCatalog}
+              </button>
+              <div className="mt-4 flex items-start justify-between gap-4">
+                <div>
+                  <p className="text-[11px] font-black uppercase tracking-[0.22em] text-brand-orange">
+                    {text.stepTwo}
+                  </p>
+                  <h2 className="mt-2 text-2xl font-black text-brand-navy dark:text-white">
+                    {text.cartDrawerTitle}
+                  </h2>
+                  <p className="mt-2 text-sm font-medium leading-relaxed text-brand-navy/70 dark:text-gray-300">
+                    {text.cartDrawerSubtitle}
+                  </p>
+                </div>
+                <span className="inline-flex shrink-0 items-center gap-2 rounded-full border border-brand-orange/25 bg-brand-orange/10 px-3 py-2 text-[10px] font-black uppercase tracking-widest text-brand-orange">
+                  <Sparkles size={14} />
+                  {cartItemCount} item(s)
+                </span>
+              </div>
+            </div>
+
+            <div className="flex-1 space-y-6 overflow-y-auto px-5 py-5 md:px-6">
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="ml-1 text-[11px] font-black uppercase tracking-widest text-brand-navy/50 dark:text-gray-400">
+                    {text.labels.cart}
+                  </span>
+                </div>
+
+                <div className="rounded-2xl border border-brand-navy/15 bg-white/80 p-4 dark:border-white/10 dark:bg-white/5">
+                  {!cart.length && (
+                    <p className="text-sm font-medium text-brand-navy/60 dark:text-gray-400">{text.cartEmptyState}</p>
+                  )}
+                  {!!cart.length && (
+                    <div
+                      className={`space-y-3 ${shouldScrollCart ? 'overflow-y-auto pr-2' : ''}`}
+                      style={shouldScrollCart && cartListMaxHeight ? { maxHeight: cartListMaxHeight } : undefined}
+                    >
+                      {cart.map((item, index) => (
+                        <div
+                          key={item.handle}
+                          ref={(node) => {
+                            cartItemRefs.current[index] = node;
+                          }}
+                          className="flex items-center gap-3"
+                        >
+                          <div className="flex-1">
+                            <p className="text-sm font-bold text-brand-navy dark:text-gray-100">{item.title}</p>
+                            {item.strength && (
+                              <p className="text-[11px] uppercase tracking-widest text-brand-navy/60 dark:text-gray-400">
+                                {item.strength}
+                              </p>
+                            )}
+                          </div>
+                          <div className="inline-flex items-center gap-2">
+                            <button type="button" onClick={() => updateQty(item.handle, -1)} className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-brand-navy/15 text-brand-navy dark:border-white/15 dark:text-gray-100">
+                              <Minus size={14} />
+                            </button>
+                            <span className="w-8 text-center font-bold text-brand-navy dark:text-white">{item.qty}</span>
+                            <button type="button" onClick={() => updateQty(item.handle, 1)} className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-brand-navy/15 text-brand-navy dark:border-white/15 dark:text-gray-100">
+                              <Plus size={14} />
+                            </button>
+                          </div>
+                          <button type="button" onClick={() => removeItem(item.handle)} className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-red-200 text-red-500 hover:bg-red-50">
+                            <Trash2 size={14} />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+
               <div className="space-y-2">
-                <label htmlFor="preorder-name" className="block text-[11px] font-black uppercase tracking-widest text-brand-navy/50 dark:text-gray-400 ml-1">
+                <label htmlFor="preorder-name" className="ml-1 block text-[11px] font-black uppercase tracking-widest text-brand-navy/50 dark:text-gray-400">
                   {text.labels.name}
                 </label>
                 <input
@@ -274,7 +456,7 @@ const PreorderPage = () => {
               </div>
 
               <div className="space-y-2">
-                <label htmlFor="preorder-email" className="block text-[11px] font-black uppercase tracking-widest text-brand-navy/50 dark:text-gray-400 ml-1">
+                <label htmlFor="preorder-email" className="ml-1 block text-[11px] font-black uppercase tracking-widest text-brand-navy/50 dark:text-gray-400">
                   {text.labels.email}
                 </label>
                 <input
@@ -289,7 +471,7 @@ const PreorderPage = () => {
               </div>
 
               <div className="space-y-2">
-                <label htmlFor="preorder-phone" className="block text-[11px] font-black uppercase tracking-widest text-brand-navy/50 dark:text-gray-400 ml-1">
+                <label htmlFor="preorder-phone" className="ml-1 block text-[11px] font-black uppercase tracking-widest text-brand-navy/50 dark:text-gray-400">
                   {text.labels.phone}
                 </label>
                 <input
@@ -302,69 +484,21 @@ const PreorderPage = () => {
                 />
               </div>
 
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-[11px] font-black uppercase tracking-widest text-brand-navy/50 dark:text-gray-400 ml-1">
-                    {text.labels.cart}
-                  </span>
-                  <span className="text-[10px] font-black text-brand-orange uppercase tracking-widest flex items-center gap-1">
-                    <Sparkles size={14} /> {cart.reduce((s, i) => s + i.qty, 0)} {es ? 'item(s)' : 'item(s)'}
-                  </span>
-                </div>
-
-                <div className="rounded-xl border border-brand-navy/15 dark:border-white/10 bg-white/70 dark:bg-white/5 p-4 space-y-3">
-                  {!cart.length && (
-                    <p className="text-sm text-brand-navy/60 dark:text-gray-400 font-medium">{text.emptyCart}</p>
-                  )}
-                  {visibleCart.map((item) => (
-                    <div key={item.handle} className="flex items-center gap-3">
-                      <div className="flex-1">
-                        <p className="text-sm font-bold text-brand-navy dark:text-gray-100">{item.title}</p>
-                        {item.strength && (
-                          <p className="text-[11px] uppercase tracking-widest text-brand-navy/60 dark:text-gray-400">
-                            {item.strength}
-                          </p>
-                        )}
-                      </div>
-                      <div className="inline-flex items-center gap-2">
-                        <button type="button" onClick={() => updateQty(item.handle, -1)} className="h-8 w-8 inline-flex items-center justify-center rounded-lg border border-brand-navy/15 dark:border-white/15 text-brand-navy dark:text-gray-100">
-                          <Minus size={14} />
-                        </button>
-                        <span className="w-8 text-center font-bold text-brand-navy dark:text-white">{item.qty}</span>
-                        <button type="button" onClick={() => updateQty(item.handle, 1)} className="h-8 w-8 inline-flex items-center justify-center rounded-lg border border-brand-navy/15 dark:border-white/15 text-brand-navy dark:text-gray-100">
-                          <Plus size={14} />
-                        </button>
-                      </div>
-                      <button type="button" onClick={() => removeItem(item.handle)} className="h-8 w-8 inline-flex items-center justify-center rounded-lg border border-red-200 text-red-500 hover:bg-red-50">
-                        <Trash2 size={14} />
-                      </button>
-                    </div>
-                  ))}
-                  {hiddenCount > 0 && (
-                    <p className="text-[11px] font-semibold text-brand-navy/60 dark:text-gray-400">
-                      {es
-                        ? `+${hiddenCount} artÃ­culo(s) adicionales en el carrito de preorden.`
-                        : `+${hiddenCount} more item(s) saved in your preorder cart.`}
-                    </p>
-                  )}
-                </div>
-
-                <div className="space-y-2">
-                  <label htmlFor="preorder-notes" className="block text-[11px] font-black uppercase tracking-widest text-brand-navy/50 dark:text-gray-400 ml-1">
-                    {text.labels.notes}
-                  </label>
-                  <textarea
-                    id="preorder-notes"
-                    value={notes}
-                    onChange={(e) => setNotes(e.target.value)}
-                    rows="3"
-                    className={`${inputClasses} resize-none`}
-                    placeholder={es ? 'Notas, uso previsto, plazos...' : 'Notes, intended use, timing...'}
-                  />
-                </div>
+              <div className="space-y-2">
+                <label htmlFor="preorder-notes" className="ml-1 block text-[11px] font-black uppercase tracking-widest text-brand-navy/50 dark:text-gray-400">
+                  {text.labels.notes}
+                </label>
+                <textarea
+                  id="preorder-notes"
+                  value={notes}
+                  onChange={(e) => setNotes(e.target.value)}
+                  rows="4"
+                  className={`${inputClasses} resize-none`}
+                  placeholder={es ? 'Notas, uso previsto, plazos...' : 'Notes, intended use, timing...'}
+                />
               </div>
 
-              <label className="flex items-start gap-2 text-sm text-brand-navy/70 dark:text-gray-300">
+              <label className="flex items-start gap-2 rounded-2xl border border-brand-navy/10 bg-white/70 px-4 py-4 text-sm text-brand-navy/70 dark:border-white/10 dark:bg-white/5 dark:text-gray-300">
                 <input
                   type="checkbox"
                   className="mt-1 accent-brand-orange"
@@ -372,24 +506,26 @@ const PreorderPage = () => {
                   onChange={(e) => setAcknowledged(e.target.checked)}
                 />
                 <span>
-                  Pre-orders are not guaranteed reservations; fulfillment follows arrival order and stock readiness. You will receive manual follow-up with availability and next steps.
+                  {text.policyNotice}
                 </span>
               </label>
 
+              {submitError && <p role="alert" className="text-sm font-bold text-brand-orange">{submitError}</p>}
+              {successMessage && <p role="status" className="text-sm font-bold text-emerald-500">{successMessage}</p>}
+            </div>
+
+            <div className="border-t border-brand-navy/10 px-5 py-4 dark:border-white/10 md:px-6">
               <button
                 type="submit"
-                disabled={isSubmitting}
-                className="w-full bg-brand-orange hover:bg-[#b84600] text-white font-black py-4 rounded-xl transition-all shadow-xl hover:shadow-brand-orange/20 transform hover:-translate-y-1 disabled:opacity-50 uppercase tracking-widest"
+                disabled={isSubmitting || !cart.length}
+                className="w-full rounded-xl bg-brand-orange py-4 font-black uppercase tracking-widest text-white shadow-xl transition-all hover:-translate-y-1 hover:bg-[#b84600] hover:shadow-brand-orange/20 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {isSubmitting ? text.processing : text.cta}
               </button>
-
-              {submitError && <p role="alert" className="text-center text-sm font-bold text-brand-orange">{submitError}</p>}
-              {successMessage && <p role="status" className="text-center text-sm font-bold text-emerald-500">{successMessage}</p>}
-            </form>
-          </div>
-        </div>
-      </section>
+            </div>
+          </form>
+        </aside>
+      </div>
     </div>
   );
 };
