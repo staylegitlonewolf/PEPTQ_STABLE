@@ -951,9 +951,11 @@ function Disclaimer({
                 <img src={darkLogo} alt="PEPTQ" className="hidden h-8 w-auto dark:block" />
               </div>
               <p className="font-montserrat font-bold mb-2">PEPTQ Research Portal</p>
-              <p className="text-brand-navy/60 dark:text-white/60 text-xs leading-relaxed max-w-4xl mx-auto mb-4">
-                {researchUseDisclaimer}
-              </p>
+              {!isMobile && (
+                <p className="text-brand-navy/60 dark:text-white/60 text-xs leading-relaxed max-w-4xl mx-auto mb-4">
+                  {researchUseDisclaimer}
+                </p>
+              )}
               <p className="text-brand-navy/60 dark:text-white/60 text-sm mb-4">
                 {language === 'es'
                   ? 'Copyright 2026 PEPTQ. Todos los derechos reservados.'
