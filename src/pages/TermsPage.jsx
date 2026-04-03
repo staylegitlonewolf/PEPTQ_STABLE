@@ -23,6 +23,13 @@ function TermsPage() {
     ? 'Al acceder a este sitio o completar una compra, aceptas que todos los materiales son solo para uso de investigacion y no para uso humano ni veterinario.'
     : researchUseAgreementLine;
 
+  // Client final additions (insert exactly as written; do not merge/rewrite).
+  const eligibilityInsert = 'You must be at least 21 years of age to access or purchase from PEPTQ. By using this site, you represent and warrant that you meet this requirement and are legally permitted to acquire materials for laboratory research purposes.';
+  const ordersReturnsInsert = 'PEPTQ reserves the right to refuse, cancel, or restrict any order at its discretion if deemed non-compliant with research-use policies. Due to the nature of research materials, opened products are not eligible for return. Unopened items may be considered for return at PEPTQ’s discretion, subject to safety, handling, and chain-of-custody requirements.';
+  const governingLawInsert1 = 'These Terms shall be governed by and interpreted in accordance with the laws of the State of Florida.';
+  const governingLawInsert2 = 'Any disputes shall be subject to the exclusive jurisdiction of the courts located in Miami-Dade County, Florida.';
+  const severabilityInsert = 'If any provision of these Terms is determined to be invalid or unenforceable, the remaining provisions shall remain in full force and effect.';
+
   const sections = es ? [
     {
       title: 'Acuerdo de Uso Solo en Investigacion',
@@ -30,6 +37,12 @@ function TermsPage() {
         'Todos los materiales PEPTQ estan destinados estrictamente a investigacion en laboratorio.',
         'Los productos no son para uso humano ni veterinario.',
         'Al acceder al sitio o comprar, confirmas que el uso sera solo para investigacion y cumplimiento aplicable.',
+      ],
+    },
+    {
+      title: 'Eligibility',
+      points: [
+        eligibilityInsert,
       ],
     },
     {
@@ -46,6 +59,12 @@ function TermsPage() {
         'Los pedidos se gestionan mediante procesos institucionales basados en factura.',
         'Los metodos de pago aprobados incluyen ACH y Zelle.',
         'Los pedidos se liberan solo despues de pago liquidado y confirmacion operativa.',
+      ],
+    },
+    {
+      title: 'Orders, Returns & Refusals',
+      points: [
+        ordersReturnsInsert,
       ],
     },
     {
@@ -77,6 +96,19 @@ function TermsPage() {
       ],
     },
     {
+      title: 'Governing Law',
+      points: [
+        governingLawInsert1,
+        governingLawInsert2,
+      ],
+    },
+    {
+      title: 'Severability',
+      points: [
+        severabilityInsert,
+      ],
+    },
+    {
       title: 'Modificaciones a los Terminos',
       points: [
         'PEPTQ puede actualizar estos terminos periodicamente.',
@@ -93,6 +125,12 @@ function TermsPage() {
       ],
     },
     {
+      title: 'Eligibility',
+      points: [
+        eligibilityInsert,
+      ],
+    },
+    {
       title: 'Eligibility & Verification',
       points: [
         'Access is limited to verified institutional research accounts.',
@@ -106,6 +144,12 @@ function TermsPage() {
         'Orders are handled through an institutional, invoice-based process.',
         'Approved payment methods include ACH and Zelle.',
         'Orders are released only after cleared payment and operational confirmation.',
+      ],
+    },
+    {
+      title: 'Orders, Returns & Refusals',
+      points: [
+        ordersReturnsInsert,
       ],
     },
     {
@@ -134,6 +178,19 @@ function TermsPage() {
         'Information submitted through forms is used for verification, waitlist, and support intake.',
         'PEPTQ does not sell information submitted through forms.',
         'See the Privacy Policy for details.',
+      ],
+    },
+    {
+      title: 'Governing Law',
+      points: [
+        governingLawInsert1,
+        governingLawInsert2,
+      ],
+    },
+    {
+      title: 'Severability',
+      points: [
+        severabilityInsert,
       ],
     },
     {
@@ -253,4 +310,3 @@ function TermsPage() {
 }
 
 export default TermsPage;
-

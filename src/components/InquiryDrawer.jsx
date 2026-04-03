@@ -25,6 +25,9 @@ const InquiryDrawer = ({
   const titleId = 'inquiry-drawer-title';
   const descriptionId = 'inquiry-drawer-description';
 
+  // Client final additions (insert exactly as written; do not merge/rewrite).
+  const proceedAcknowledgment = 'By proceeding, you confirm that you are at least 21 years of age, are a qualified purchaser acquiring materials strictly for lawful laboratory research use, understand associated risks, and agree to all Terms and Conditions.';
+
   return (
     <>
       <div
@@ -204,6 +207,9 @@ const InquiryDrawer = ({
             >
               Clear All
             </button>
+            <p className="text-xs font-semibold text-brand-navy/65 dark:text-gray-400 leading-relaxed">
+              {proceedAcknowledgment}
+            </p>
             <button
               type="button"
               onClick={onRequestBulkQuote}

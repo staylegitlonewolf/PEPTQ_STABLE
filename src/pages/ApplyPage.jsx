@@ -14,6 +14,10 @@ const ApplyPage = () => {
   const { language = 'en', reduceMotion } = useAccessibility();
   const es = language === 'es';
   const { manifestItems } = useManifest();
+
+  // Client final additions (insert exactly as written; do not merge/rewrite).
+  const ageRequirementNote = 'Applicants must be 21 years of age or older.';
+  const proceedAcknowledgment = 'By proceeding, you confirm that you are at least 21 years of age, are a qualified purchaser acquiring materials strictly for lawful laboratory research use, understand associated risks, and agree to all Terms and Conditions.';
   const toAbsoluteImageUrl = (imagePath) => {
     if (!imagePath) return '';
     try {
@@ -305,6 +309,13 @@ const ApplyPage = () => {
                           {text.labels.agree}
                         </label>
                       </div>
+
+                      <p className="text-xs font-semibold text-brand-navy/65 dark:text-gray-400 leading-relaxed">
+                        {ageRequirementNote}
+                      </p>
+                      <p className="text-xs font-semibold text-brand-navy/65 dark:text-gray-400 leading-relaxed">
+                        {proceedAcknowledgment}
+                      </p>
 
                       <button type="submit" disabled={isSubmitting} className="w-full bg-brand-orange hover:bg-[#b84600] text-white font-black py-5 rounded-xl transition-all shadow-xl hover:shadow-brand-orange/20 transform hover:-translate-y-1 disabled:opacity-50 uppercase tracking-widest">
                         {isSubmitting ? text.processing : text.apply}
