@@ -5,11 +5,13 @@ import { useTheme } from '../context/ThemeContext';
 import { getAssetUrl } from '../services/orderService';
 import { toEmbeddableGoogleDriveUrl } from '../utils/driveLinks';
 import { useAccessibleOverlay } from '../hooks/useAccessibleOverlay';
+import { publicAssetUrl } from '../utils/publicAssets';
 
 function PortalGate({ isOpen, onClose }) {
   const { theme } = useTheme();
-  const lightLogo = toEmbeddableGoogleDriveUrl(getAssetUrl('WEBSITE_LIGHT_LOGO', getAssetUrl('light', '/logo.svg')));
-  const darkLogo = toEmbeddableGoogleDriveUrl(getAssetUrl('WEBSITE_DARK_LOGO', getAssetUrl('dark', '/logo.svg')));
+  const defaultLogo = publicAssetUrl('logo.svg');
+  const lightLogo = toEmbeddableGoogleDriveUrl(getAssetUrl('WEBSITE_LIGHT_LOGO', getAssetUrl('light', defaultLogo)));
+  const darkLogo = toEmbeddableGoogleDriveUrl(getAssetUrl('WEBSITE_DARK_LOGO', getAssetUrl('dark', defaultLogo)));
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');

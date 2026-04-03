@@ -4,6 +4,7 @@ import { useAccessibility } from '../context/AccessibilityContext';
 import { useAccessibleOverlay } from '../hooks/useAccessibleOverlay';
 import { getLocalOwnerSettings, getAssetUrl } from '../services/orderService';
 import { toEmbeddableGoogleDriveUrl } from '../utils/driveLinks';
+import { publicAssetAbsoluteUrl, publicAssetUrl } from '../utils/publicAssets';
 import StructureViewer from './StructureViewer';
 import CatalogImage from './CatalogImage';
 
@@ -53,7 +54,9 @@ const ProductModal = ({
   const [requestedQuantity, setRequestedQuantity] = useState(Math.max(1, Number(product?.quantity || 1)));
   const { reduceMotion } = useAccessibility();
   const dialogRef = useAccessibleOverlay({ isOpen, onClose });
-  const lightLogo = toEmbeddableGoogleDriveUrl(getAssetUrl('WEBSITE_LIGHT_LOGO', getAssetUrl('light', '/logo.svg')));
+  const lightLogo = toEmbeddableGoogleDriveUrl(
+    getAssetUrl('WEBSITE_LIGHT_LOGO', getAssetUrl('light', publicAssetUrl('logo.svg')))
+  );
   const productState = activeProduct || product || null;
   const stockMeta = resolveStockMeta(productState, 5);
   const canUseManifest = canOrder && stockMeta.inStock;
@@ -305,7 +308,7 @@ const ProductModal = ({
     <section class="page">
       <div class="doc-header">
         <div class="brand">
-          <img src="${escapePrintHtml(lightLogo || `${window.location.origin}/logo.svg`)}" alt="PEPTQ logo" />
+          <img src="${escapePrintHtml(lightLogo || publicAssetAbsoluteUrl('logo.svg'))}" alt="PEPTQ logo" />
           <span class="doc-label">Technical Dossier</span>
         </div>
         <span class="doc-label">${escapePrintHtml(new Date().toLocaleDateString())}</span>

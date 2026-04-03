@@ -7,9 +7,9 @@ export default defineConfig(({ mode }) => {
   const isPages = mode === 'pages'
 
   return {
-    // For GitHub Pages (project pages), a relative base is required.
-    // Keep stable builds at `/` by default, but allow `--mode pages` to target Pages.
-    base: (isBeta || isPages) ? './' : '/',
+    // GitHub Pages (project pages) lives under `/<repo-name>/`.
+    // Use an explicit base so BrowserRouter can mount correctly without hash routing.
+    base: isPages ? '/PEPTQ_STABLE/' : (isBeta ? './' : '/'),
     plugins: [react()],
     build: {
       outDir: isBeta ? 'BETA_WEBSITE_ONLY_FOLDER' : 'dist',

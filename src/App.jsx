@@ -28,6 +28,7 @@ import QuickAccessibilityPanel from './components/QuickAccessibilityPanel';
 import AppParticleBackground from './components/AppParticleBackground';
 import { fetchSiteLayout, fetchAssets, getLocalOwnerSettings, getAssetUrl, getSiteLayoutValue } from './services/orderService';
 import { toEmbeddableGoogleDriveUrl } from './utils/driveLinks';
+import { publicAssetUrl } from './utils/publicAssets';
  
 // Print Center surfaces removed per PEPTQ separation directives
 
@@ -41,6 +42,7 @@ const VERIFIED_WELCOME_STORAGE_KEY = 'peptq_verified_seen';
 const SHOULD_USE_GOVERNANCE_MOCK = true;
 const GOVERNANCE_MOCK_ACTIVE = import.meta.env.VITE_GOVERNANCE_MOCK_ACTIVE !== 'false';
 const GOOGLE_TRANSLATE_ENABLED = import.meta.env.VITE_ENABLE_GOOGLE_TRANSLATE === 'true' || import.meta.env.PROD;
+const DEFAULT_LOGO_URL = publicAssetUrl('logo.svg');
 
 const navItems = [
   { to: '/catalog', label: 'Catalog' },
@@ -351,8 +353,8 @@ function Sidebar({
   onPortalAccess = () => {},
   supportHref = 'mailto:support@peptq.com',
   supportExternal = false,
-  lightLogo = '/logo.svg',
-  darkLogo = '/logo.svg',
+  lightLogo = DEFAULT_LOGO_URL,
+  darkLogo = DEFAULT_LOGO_URL,
 }) {
   const { theme, toggleTheme } = useTheme();
   const { language = 'en', setLanguage } = useAccessibility();
@@ -562,8 +564,8 @@ function MobileMenuDrawer({
   onPortalAccess = () => {},
   supportHref = 'mailto:support@peptq.com',
   supportExternal = false,
-  lightLogo = '/logo.svg',
-  darkLogo = '/logo.svg',
+  lightLogo = DEFAULT_LOGO_URL,
+  darkLogo = DEFAULT_LOGO_URL,
 }) {
   const { theme, toggleTheme } = useTheme();
   const { language = 'en', setLanguage } = useAccessibility();
@@ -755,7 +757,7 @@ function MobileMenuDrawer({
   );
 }
 
-function MobileTopNav({ lightLogo = '/logo.svg', darkLogo = '/logo.svg' }) {
+function MobileTopNav({ lightLogo = DEFAULT_LOGO_URL, darkLogo = DEFAULT_LOGO_URL }) {
   const { theme, toggleTheme } = useTheme();
   const { session, role, isAuthenticated } = useAuth();
   const avatar = String(session?.googlePhotoUrl || session?.profilePhotoUrl || '').trim();
@@ -917,8 +919,8 @@ function Disclaimer({
   showNotice = true,
   isMobile = false,
   language = 'en',
-  lightLogo = '/logo.svg',
-  darkLogo = '/logo.svg',
+  lightLogo = DEFAULT_LOGO_URL,
+  darkLogo = DEFAULT_LOGO_URL,
 }) {
   const footerTermsLabel = localizeShellLabel('Terms & Conditions', language);
   const footerPrivacyLabel = localizeShellLabel('Privacy Policy', language);
@@ -1075,7 +1077,7 @@ function AccessibilityFilterDefs() {
 
 function App() {
   return (
-    <Router>
+    <Router basename={import.meta.env.BASE_URL}>
       <AccessibilityFilterDefs />
       <AppLayout />
     </Router>
@@ -1161,9 +1163,9 @@ function AppLayout() {
     const raw = getAssetUrl(sectionId, getAssetUrl(assetFallbackId || '', fallback));
     return toEmbeddableGoogleDriveUrl(raw);
   };
-  const lightLogo = getAsset('WEBSITE_LIGHT_LOGO', '/logo.svg', 'light');
-  const darkLogo = getAsset('WEBSITE_DARK_LOGO', '/logo.svg', 'dark');
-  const faviconUrl = getAsset('WEBSITE_FAVICON', '/logo.svg', 'favicon');
+  const lightLogo = getAsset('WEBSITE_LIGHT_LOGO', DEFAULT_LOGO_URL, 'light');
+  const darkLogo = getAsset('WEBSITE_DARK_LOGO', DEFAULT_LOGO_URL, 'dark');
+  const faviconUrl = getAsset('WEBSITE_FAVICON', DEFAULT_LOGO_URL, 'favicon');
   const handleBottomPrimaryPress = () => {
     if (BETA_MODE) {
       setIsMobileMenuOpen((prev) => !prev);
@@ -1516,6 +1518,7 @@ function AppLayout() {
                   <Route path="/documents" element={<Navigate to="/catalog" replace />} />
                 </>
               )}
+              <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </main>
 

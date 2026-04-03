@@ -1,3 +1,5 @@
+import { publicAssetUrl } from '../utils/publicAssets';
+
 const normalizeText = (value) => String(value || '').trim();
 
 export const COMING_SOON_SITE_SECTIONS = {
@@ -8,10 +10,10 @@ export const COMING_SOON_SITE_SECTIONS = {
 };
 
 export const COMING_SOON_DEFAULTS = {
-  heroImage: '/hero.png',
-  lightLogo: '/logo.svg',
-  darkLogo: '/logo.svg',
-  favicon: '/logo.svg',
+  heroImage: publicAssetUrl('hero.png'),
+  lightLogo: publicAssetUrl('logo.svg'),
+  darkLogo: publicAssetUrl('logo.svg'),
+  favicon: publicAssetUrl('logo.svg'),
 };
 
 export const WEBSITE_EDITOR_PAGES = [
