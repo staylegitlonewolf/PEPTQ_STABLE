@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { 
   ShieldCheck, 
@@ -12,6 +12,7 @@ import {
   AlertCircle
 } from 'lucide-react';
 import { catalogService } from '../services/catalogService';
+import { toEmbeddableGoogleDriveUrl } from '../utils/driveLinks';
 
 const VerifyPage = () => {
   const { lotId } = useParams();
@@ -73,6 +74,10 @@ const VerifyPage = () => {
     );
   }
 
+
+  const coaUrl = String(record?.coa_url || '').trim();
+  const coaEmbedUrl = toEmbeddableGoogleDriveUrl(coaUrl);
+  const isPdf = /\\.pdf(?:$|[?#])/i.test(coaUrl);
   return (
     <div className="max-w-4xl mx-auto px-6 py-12">
       {/* Verification Header */}
@@ -143,16 +148,23 @@ const VerifyPage = () => {
         {/* COA Preview / Link */}
         <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-700">
            {record.coa_url ? (
-             <div className="group relative overflow-hidden rounded-4xl border-2 border-brand-navy/10 dark:border-white/10 bg-black aspect-3/4 shadow-2xl transition-all hover:border-brand-orange/50">
-                <img 
-                  src={record.coa_url} 
-                  alt="Certificate of Analysis" 
-                  className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity"
-                />
-                <div className="absolute inset-x-0 bottom-0 p-8 bg-linear-to-t from-black/80 to-transparent">
+             <div className="group relative overflow-hidden rounded-4xl border-2 border-brand-navy/10 dark:border-white/10 bg-black aspect-3/4 shadow-2xl transition-all hover:border-brand-orange/50">                {isPdf ? (
+                  <iframe
+                    src={coaEmbedUrl || coaUrl}
+                    title="Certificate of Analysis"
+                    className="w-full h-full"
+                    style={{ border: 0 }}
+                  />
+                ) : (
+                  <img
+                    src={coaEmbedUrl || coaUrl}
+                    alt="Certificate of Analysis"
+                    className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity"
+                  />
+                )}                <div className="absolute inset-x-0 bottom-0 p-8 bg-linear-to-t from-black/80 to-transparent">
                    <p className="text-[10px] font-black uppercase tracking-widest text-white/60 mb-2">Primary Lab Certificate</p>
                    <a 
-                     href={record.coa_url} 
+                     href={coaUrl} 
                      target="_blank" 
                      rel="noopener noreferrer" 
                      className="inline-flex items-center gap-2 text-white font-black uppercase tracking-widest text-xs group-hover:text-brand-orange transition-colors"
@@ -184,3 +196,4 @@ const VerifyPage = () => {
 };
 
 export default VerifyPage;
+

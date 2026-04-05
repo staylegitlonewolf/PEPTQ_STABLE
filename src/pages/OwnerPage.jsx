@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+﻿import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { 
   Truck, 
@@ -31,10 +31,11 @@ const {
   promoteWaitlistEntry: promoteWaitlist
 } = requestService;
 
-import { 
+import {
   updateCatalogPrice,
   deleteCatalogProduct as deleteCatalogItem,
-  submitManualStockAdjustment as submitStockAdjustment
+  submitManualStockAdjustment as submitStockAdjustment,
+  upsertLotMetadata
 } from '../services/orderService';
 
 import {
@@ -113,6 +114,15 @@ const OwnerPage = ({
   const [catalogPriceSavingHandle, setCatalogPriceSavingHandle] = useState('');
   const [catalogDeletingHandle, setCatalogDeletingHandle] = useState('');
   const [stockAdjustmentSubmitting, setStockAdjustmentSubmitting] = useState(false);
+  // -- Lot / COA Registry State --
+  const [lotProductId, setLotProductId] = useState('');
+  const [lotIdInput, setLotIdInput] = useState('');
+  const [lotPurityPct, setLotPurityPct] = useState('');
+  const [lotTestDate, setLotTestDate] = useState('');
+  const [lotCoaUrl, setLotCoaUrl] = useState('');
+  const [lotVerified, setLotVerified] = useState(true);
+  const [lotSubmitStatus, setLotSubmitStatus] = useState('');
+  const [lotSubmitError, setLotSubmitError] = useState('');
 
   // -- Loading States --
   const [isWaitlistLoading, setIsWaitlistLoading] = useState(false);
@@ -121,6 +131,11 @@ const OwnerPage = ({
   useEffect(() => {
     loadInitialData();
   }, []);
+  useEffect(() => {
+    if (lotProductId) return;
+    const first = Array.isArray(catalogItems) && catalogItems.length ? String(catalogItems[0]?.handle || '') : '';
+    if (first) setLotProductId(first);
+  }, [catalogItems, lotProductId]);
 
   useEffect(() => {
     if (activeTab === 'growth' && activeSubTab === 'waitlist') {
@@ -246,6 +261,33 @@ const OwnerPage = ({
   const handleSaveCatalogPrice = async (handle, price) => {
     setCatalogPriceSavingHandle(handle);
     try { await updateCatalogPrice(handle, price); await loadInitialData(); } finally { setCatalogPriceSavingHandle(''); }
+  };
+  const handleUpsertLot = async () => {
+    setLotSubmitError('');
+    setLotSubmitStatus('');
+
+    if (role !== 'OWNER') {
+      setLotSubmitError('Owner access is required to update lot metadata.');
+      return;
+    }
+
+    try {
+      const res = await upsertLotMetadata({
+        lotId: lotIdInput,
+        productId: lotProductId,
+        coaUrl: lotCoaUrl,
+        purityPct: lotPurityPct,
+        testDate: lotTestDate,
+        verified: lotVerified,
+        actorEmail: session?.email,
+      });
+
+      const savedLot = String(res?.lot_id || lotIdInput || '').trim().toUpperCase();
+      setLotSubmitStatus(savedLot ? `Saved lot ${savedLot}.` : 'Saved lot metadata.');
+      setAuditNotes((prev) => [`Lot metadata upserted: ${savedLot || '(unknown)'}`, ...prev].slice(0, 40));
+    } catch (err) {
+      setLotSubmitError(err?.message || 'Unable to save lot metadata.');
+    }
   };
 
   const handleDeleteCatalogItem = async (handle) => {
@@ -381,7 +423,7 @@ const OwnerPage = ({
                {activeTab === 'growth' && [{id:'membership',l:'Members'},{id:'waitlist',l:'Waitlist'}].map(s=>(
                  <button key={s.id} onClick={()=>setActiveSubTab(s.id)} className={`px-3 py-1 text-[10px] font-black uppercase transition ${activeSubTab===s.id?'text-emerald-500':'opacity-60 dark:text-white'}`}>{s.l}</button>
                ))}
-               {activeTab === 'registry' && [{id:'catalog',l:'Catalog'},{id:'inventory',l:'Stock'},{id:'assets',l:'Assets'}].map(s=>(
+               {activeTab === 'registry' && [{id:'catalog',l:'Catalog'},{id:'lots',l:'Lots / COA'},{id:'inventory',l:'Stock'},{id:'assets',l:'Assets'}].map(s=>(
                  <button key={s.id} onClick={()=>setActiveSubTab(s.id)} className={`px-3 py-1 text-[10px] font-black uppercase transition ${activeSubTab===s.id?'text-blue-500':'opacity-60 dark:text-white'}`}>{s.l}</button>
                ))}
                {activeTab === 'system' && [{id:'settings',l:'System'},{id:'website-editor',l:'Editor'},{id:'help-notes',l:'Notes'}].map(s=>(
@@ -511,7 +553,86 @@ const OwnerPage = ({
             </div>
           )}
 
-          {activeTab === 'registry' && activeSubTab === 'catalog' && (
+          
+          {activeTab === 'registry' && activeSubTab === 'lots' && (
+            <div className="space-y-4">
+              <h2 className="text-xl font-black dark:text-white">Lot + COA Registry</h2>
+
+              <div className="rounded-xl border border-brand-navy/10 p-4 space-y-4 dark:border-white/10 bg-white dark:bg-white/5">
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <p className="text-[10px] font-black uppercase tracking-widest text-blue-500">Upsert Lot Metadata</p>
+                    <p className="mt-2 text-xs text-brand-navy/60 dark:text-gray-300">
+                      Add or update a lot record used by the public COA verifier. Example: Lot <span className="font-black">BP1026-01</span> for handle <span className="font-black">bpc-157</span>.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const nextLot = String(lotIdInput || '').trim().toUpperCase();
+                      if (!nextLot) return;
+                      navigate(`/verify/${encodeURIComponent(nextLot)}`);
+                    }}
+                    className="rounded-lg border border-brand-navy/25 dark:border-white/20 px-3 py-1.5 text-[10px] font-black uppercase tracking-widest text-brand-navy dark:text-gray-200"
+                  >
+                    Preview
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-[10px] font-black uppercase tracking-widest opacity-60 mb-1 dark:text-white">Product Handle</label>
+                    <input className={inputClass} value={lotProductId} onChange={e=>setLotProductId(e.target.value)} placeholder="bpc-157" />
+                    <p className="mt-1 text-[11px] text-brand-navy/60 dark:text-gray-400">Use the catalog handle (SKU). This should match what you use in the registry.</p>
+                  </div>
+
+                  <div>
+                    <label className="block text-[10px] font-black uppercase tracking-widest opacity-60 mb-1 dark:text-white">Lot ID</label>
+                    <input className={inputClass} value={lotIdInput} onChange={e=>setLotIdInput(e.target.value)} placeholder="BP1026-01" />
+                  </div>
+
+                  <div>
+                    <label className="block text-[10px] font-black uppercase tracking-widest opacity-60 mb-1 dark:text-white">Purity %</label>
+                    <input className={inputClass} value={lotPurityPct} onChange={e=>setLotPurityPct(e.target.value)} placeholder="99.0" />
+                  </div>
+
+                  <div>
+                    <label className="block text-[10px] font-black uppercase tracking-widest opacity-60 mb-1 dark:text-white">Test Date (optional)</label>
+                    <input className={inputClass} value={lotTestDate} onChange={e=>setLotTestDate(e.target.value)} placeholder="2026-03-10" />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-[10px] font-black uppercase tracking-widest opacity-60 mb-1 dark:text-white">COA PDF URL (Drive or https)</label>
+                  <input className={inputClass} value={lotCoaUrl} onChange={e=>setLotCoaUrl(e.target.value)} placeholder="https://drive.google.com/file/d/.../view" />
+                  <p className="mt-1 text-[11px] text-brand-navy/60 dark:text-gray-400">A Google Drive share link is fine. The verifier will link out to the PDF.</p>
+                </div>
+
+                <label className="inline-flex items-center gap-2 text-xs font-bold text-brand-navy/70 dark:text-gray-300">
+                  <input type="checkbox" checked={lotVerified} onChange={e=>setLotVerified(Boolean(e.target.checked))} className="accent-brand-orange" />
+                  Mark as VERIFIED
+                </label>
+
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    type="button"
+                    onClick={handleUpsertLot}
+                    className="rounded-lg bg-brand-navy text-white px-4 py-2 text-[10px] font-black dark:bg-white dark:text-black uppercase tracking-widest"
+                  >
+                    Save Lot
+                  </button>
+                </div>
+
+                {lotSubmitError ? (
+                  <p className="text-xs font-black text-brand-orange">{lotSubmitError}</p>
+                ) : null}
+
+                {lotSubmitStatus ? (
+                  <p className="text-xs font-black text-emerald-600">{lotSubmitStatus}</p>
+                ) : null}
+              </div>
+            </div>
+          )}{activeTab === 'registry' && activeSubTab === 'catalog' && (
             <div className="space-y-4">
                <h2 className="text-xl font-black dark:text-white">Global Registry</h2>
                <div className="rounded-xl border border-blue-500/10 p-4 bg-blue-500/5 dark:bg-blue-500/10">
@@ -569,3 +690,5 @@ const OwnerPage = ({
 };
 
 export default OwnerPage;
+
+
