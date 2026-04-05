@@ -509,23 +509,13 @@ function Sidebar({
               Notice
             </p>
             <p className="text-[11px] leading-relaxed text-brand-navy/75 dark:text-gray-300 font-semibold">
-              All materials are intended for laboratory research use only.
+              {language === 'es' ? 'Aviso de Uso Solo en Investigacion.' : 'Research Use Only Disclaimer.'}
             </p>
-            {supportExternal ? (
-              <a
-                href={supportHref}
-                className="mt-3 inline-block text-xs font-bold text-brand-navy/70 dark:text-gray-300 underline underline-offset-2 hover:text-brand-orange"
-              >
-                Contact Us
-              </a>
-            ) : (
-              <Link
-                to={supportHref}
-                className="mt-3 inline-block text-xs font-bold text-brand-navy/70 dark:text-gray-300 underline underline-offset-2 hover:text-brand-orange"
-              >
-                Contact Us
-              </Link>
-            )}
+            <p className="text-[10px] leading-relaxed text-brand-navy/60 dark:text-gray-400 mt-1">
+              {language === 'es'
+                ? 'Todos los materiales estan destinados solo para uso de investigacion en laboratorio.'
+                : 'All materials are intended for laboratory research use only.'}
+            </p>
             {!isAuthenticated && !BETA_MODE && (
               <button
                 type="button"
@@ -535,7 +525,12 @@ function Sidebar({
                 PORTAL
               </button>
             )}
-          </div>
+            <Link
+              to="/contact"
+              className="mt-3 inline-block text-xs font-bold text-brand-navy/70 dark:text-gray-300 underline underline-offset-2 hover:text-brand-orange"
+            >
+              {language === 'es' ? 'Contacto' : 'Contact'}
+            </Link></div>
         ) : null}
 
         {BETA_MODE && (
@@ -715,24 +710,13 @@ function MobileMenuDrawer({
               Notice
             </p>
             <p className="text-[11px] leading-relaxed text-brand-navy/75 dark:text-gray-300 font-semibold">
-              All materials are intended for laboratory research use only.
+              {language === 'es' ? 'Aviso de Uso Solo en Investigacion.' : 'Research Use Only Disclaimer.'}
             </p>
-            {supportExternal ? (
-              <a
-                href={supportHref}
-                className="mt-3 inline-block text-xs font-bold text-brand-navy/70 dark:text-gray-300 underline underline-offset-2 hover:text-brand-orange"
-              >
-                Contact Us
-              </a>
-            ) : (
-              <Link
-                to={supportHref}
-                onClick={onClose}
-                className="mt-3 inline-block text-xs font-bold text-brand-navy/70 dark:text-gray-300 underline underline-offset-2 hover:text-brand-orange"
-              >
-                Contact Us
-              </Link>
-            )}
+            <p className="text-[10px] leading-relaxed text-brand-navy/60 dark:text-gray-400 mt-1">
+              {language === 'es'
+                ? 'Todos los materiales estan destinados solo para uso de investigacion en laboratorio.'
+                : 'All materials are intended for laboratory research use only.'}
+            </p>
             {!isAuthenticated && !BETA_MODE && (
               <button
                 type="button"
@@ -745,7 +729,13 @@ function MobileMenuDrawer({
                 PORTAL
               </button>
             )}
-          </div>
+            <Link
+              to="/contact"
+              onClick={onClose}
+              className="mt-3 inline-block text-xs font-bold text-brand-navy/70 dark:text-gray-300 underline underline-offset-2 hover:text-brand-orange"
+            >
+              {language === 'es' ? 'Contacto' : 'Contact'}
+            </Link></div>
         ) : null}
       </aside>
     </div>
@@ -1548,6 +1538,7 @@ function AppLayout() {
 }
 
 export default App;
+
 
 
 
