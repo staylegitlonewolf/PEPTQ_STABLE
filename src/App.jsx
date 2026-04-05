@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, NavLink, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { Sun, Moon, Search, Users, ShoppingCart, ChevronLeft, ChevronRight, Accessibility, ShieldCheck, Menu, X } from 'lucide-react';
 import { useTheme } from './context/ThemeContext';
@@ -123,6 +123,9 @@ const hideGoogleTranslateChrome = () => {
   document.body.style.marginTop = '0px';
 
   const selectors = [
+    // Banner container sometimes injected directly into <body>.
+    'body > .skiptranslate',
+    'iframe.skiptranslate',
     '.goog-te-banner-frame',
     '.goog-te-balloon-frame',
     '.VIpgJd-ZVi9od-ORHb',

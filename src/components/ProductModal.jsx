@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { X, FileText, ShieldAlert, Printer } from 'lucide-react';
 import { useAccessibility } from '../context/AccessibilityContext';
 import { useAccessibleOverlay } from '../hooks/useAccessibleOverlay';
@@ -52,6 +53,7 @@ const ProductModal = ({
   const [activeProduct, setActiveProduct] = useState(product);
   const [activeTab, setActiveTab] = useState(0);
   const [requestedQuantity, setRequestedQuantity] = useState(Math.max(1, Number(product?.quantity || 1)));
+  const navigate = useNavigate();
   const { reduceMotion } = useAccessibility();
   const dialogRef = useAccessibleOverlay({ isOpen, onClose });
   const lightLogo = toEmbeddableGoogleDriveUrl(
@@ -85,6 +87,26 @@ const ProductModal = ({
     setActiveTab(0);
     setRequestedQuantity(Math.max(1, Number(prod?.quantity || 1)));
     onNavigate(prod);
+  };
+
+  const handleOpenCoa = () => {
+    const lotId = String(
+      activeProduct?.lot_id
+        ?? activeProduct?.lotId
+        ?? activeProduct?.coa_lot_id
+        ?? activeProduct?.coaLotId
+        ?? activeProduct?.coa_lot
+        ?? activeProduct?.coaLot
+        ?? ''
+    ).trim();
+
+    if (lotId) {
+      navigate('/coa/' + encodeURIComponent(lotId));
+    } else {
+      navigate('/coa');
+    }
+
+    onClose();
   };
 
   const handlePrintReference = () => {
@@ -462,15 +484,27 @@ const ProductModal = ({
         onClick={(e) => e.stopPropagation()}
       >
         <div className="xl:hidden sticky top-0 z-110 flex items-center justify-between gap-2 px-2.5 sm:px-3 py-2.5 sm:py-3 border-b border-gray-100 dark:border-gray-900 bg-white/95 dark:bg-[#0a0a0f]/95 backdrop-blur-sm print-hide">
-          <button
-            type="button"
-            onClick={handlePrintReference}
-            className="inline-flex items-center gap-1.5 rounded-full bg-white dark:bg-black/40 border border-gray-200 dark:border-gray-800 px-3 py-2 text-brand-navy dark:text-white shadow-sm"
-            aria-label="Print product reference"
-          >
-            <Printer size={16} />
-            <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-wide">Print Reference</span>
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={handlePrintReference}
+              className="inline-flex items-center gap-1.5 rounded-full bg-white dark:bg-black/40 border border-gray-200 dark:border-gray-800 px-3 py-2 text-brand-navy dark:text-white shadow-sm"
+              aria-label="Print product reference"
+            >
+              <Printer size={16} />
+              <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-wide">Print Reference</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={handleOpenCoa}
+              className="inline-flex items-center gap-1.5 rounded-full bg-brand-orange/10 dark:bg-black/40 border border-brand-orange/35 dark:border-brand-orange/45 px-3 py-2 text-brand-orange shadow-sm"
+              aria-label="Open COA lookup"
+            >
+              <FileText size={16} />
+              <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-wide">COA</span>
+            </button>
+          </div>
 
           <button
             type="button"
@@ -637,14 +671,25 @@ const ProductModal = ({
                 <p className="text-sm text-brand-navy/80 dark:text-gray-200">
                   Generate a printable reference sheet for this product.
                 </p>
-                <button
-                  type="button"
-                  onClick={handlePrintReference}
-                  className="inline-flex items-center gap-2 rounded-xl border border-brand-orange/60 bg-brand-orange/10 px-4 py-2 text-sm font-black uppercase tracking-widest text-brand-orange hover:bg-brand-orange hover:text-white transition-colors"
-                >
-                  <Printer size={16} />
-                  Print
-                </button>
+                <div className="flex flex-wrap items-center gap-3">
+                  <button
+                    type="button"
+                    onClick={handlePrintReference}
+                    className="inline-flex items-center gap-2 rounded-xl border border-brand-orange/60 bg-brand-orange/10 px-4 py-2 text-sm font-black uppercase tracking-widest text-brand-orange hover:bg-brand-orange hover:text-white transition-colors"
+                  >
+                    <Printer size={16} />
+                    Print
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={handleOpenCoa}
+                    className="inline-flex items-center gap-2 rounded-xl border border-brand-navy/25 dark:border-white/15 bg-white/80 dark:bg-white/5 px-4 py-2 text-sm font-black uppercase tracking-widest text-brand-navy dark:text-gray-100 hover:border-brand-orange/60 hover:text-brand-orange transition-colors"
+                  >
+                    <FileText size={16} />
+                    COA
+                  </button>
+                </div>
               </div>
             )}
           </div>
@@ -682,7 +727,8 @@ const ProductModal = ({
                     )}
                   </div>
                 </div>
-                <button
+
+          <button
                   type="button"
                   onClick={handleAddToManifest}
                   className="w-full py-4 sm:py-5 bg-brand-orange text-white text-base sm:text-lg font-black uppercase tracking-wider sm:tracking-widest rounded-2xl shadow-2xl hover:-translate-y-1 transition-all"
