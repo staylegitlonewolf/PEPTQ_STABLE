@@ -528,12 +528,15 @@ function Sidebar({
                 PORTAL
               </button>
             )}
-            <Link
-              to="/contact"
-              className="mt-3 inline-block text-xs font-bold text-brand-navy/70 dark:text-gray-300 underline underline-offset-2 hover:text-brand-orange"
-            >
-              {language === 'es' ? 'Contacto' : 'Contact'}
-            </Link></div>
+            <div className="mt-3">
+              <Link
+                to="/contact"
+                className="inline-block text-xs font-bold text-brand-navy/70 dark:text-gray-300 underline underline-offset-2 hover:text-brand-orange"
+              >
+                {language === 'es' ? 'Contacto' : 'Contact'}
+              </Link>
+            </div>
+          </div>
         ) : null}
 
         {BETA_MODE && (
@@ -732,13 +735,16 @@ function MobileMenuDrawer({
                 PORTAL
               </button>
             )}
-            <Link
-              to="/contact"
-              onClick={onClose}
-              className="mt-3 inline-block text-xs font-bold text-brand-navy/70 dark:text-gray-300 underline underline-offset-2 hover:text-brand-orange"
-            >
-              {language === 'es' ? 'Contacto' : 'Contact'}
-            </Link></div>
+            <div className="mt-3">
+              <Link
+                to="/contact"
+                onClick={onClose}
+                className="inline-block text-xs font-bold text-brand-navy/70 dark:text-gray-300 underline underline-offset-2 hover:text-brand-orange"
+              >
+                {language === 'es' ? 'Contacto' : 'Contact'}
+              </Link>
+            </div>
+          </div>
         ) : null}
       </aside>
     </div>
