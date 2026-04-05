@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>PEPTQ</title>
+    <meta name="robots" content="noindex" />
+    <script>
+      (function () {
+        var l = window.location;
+        var segments = l.pathname.split('/').filter(Boolean);
+        var base = segments.length ? '/' + segments[0] + '/' : '/';
+        var path = '/' + segments.slice(1).join('/');
+
+        // Redirect deep links back to the SPA entrypoint (GitHub Pages project sites).
+        // The index page will restore the intended route.
+        var redirect = base
+          + '?spa=1'
+          + '&path=' + encodeURIComponent(path || '/')
+          + '&search=' + encodeURIComponent(l.search || '')
+          + '&hash=' + encodeURIComponent(l.hash || '');
+
+        l.replace(redirect);
+      })();
+    </script>
+  </head>
+  <body></body>
+</html>
