@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+﻿import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { ArrowLeft, Plus, Minus, Trash2, Sparkles, CheckCircle2, ShoppingBag } from 'lucide-react';
 import { submitPreorderRequest } from '../services/orderService';
 import { useAccessibility } from '../context/AccessibilityContext';
@@ -9,7 +9,7 @@ const inputClasses = 'w-full px-4 py-3 border border-brand-navy/25 dark:border-w
 const MAX_VISIBLE_CART_ITEMS = 5;
 const CART_ITEM_GAP_PX = 12;
 
-const DEFAULT_PURITY = 'Purity ≥99% (HPLC-verified)';
+const DEFAULT_PURITY = 'Purity >=99% (HPLC-verified)';
 const SKU_CATALOG = [
   { handle: '5-AMINO-1MQ-10MG', title: '5-Amino 1MQ 10mg', purity: DEFAULT_PURITY },
   { handle: 'BPC-157', title: 'BPC-157', purity: DEFAULT_PURITY },
@@ -68,8 +68,8 @@ const PreorderPage = () => {
     success: (count) => es
       ? `Preorden enviada para ${count} item(s). Te contactaremos pronto.`
       : `Pre-order submitted for ${count} item(s). We will contact you soon.`,
-    stepOne: es ? 'Paso 1 · Selecciona SKU' : 'Step 1 · Select SKUs',
-    stepTwo: es ? 'Paso 2 · Revisa y envia' : 'Step 2 · Review & submit',
+    stepOne: es ? 'Paso 1 Â· Selecciona SKU' : 'Step 1 Â· Select SKUs',
+    stepTwo: es ? 'Paso 2 Â· Revisa y envia' : 'Step 2 Â· Review & submit',
     cartButtonLabel: es ? 'Abrir carrito de preorden' : 'Open pre-order cart',
     cartButtonHint: es ? 'Selecciona SKU para continuar' : 'Select SKUs to continue',
     cartButtonReady: es ? 'Revisa carrito y continua al formulario' : 'Review cart and continue to the form',
@@ -94,7 +94,7 @@ const PreorderPage = () => {
   const catalogFallback = useMemo(() => SKU_CATALOG, []);
   const cartItemCount = cart.reduce((sum, item) => sum + item.qty, 0);
   const cartPreview = cart.length
-    ? `${cart.slice(0, 2).map((item) => item.title).join(' · ')}${cart.length > 2 ? ` +${cart.length - 2}` : ''}`
+    ? `${cart.slice(0, 2).map((item) => item.title).join(' Â· ')}${cart.length > 2 ? ` +${cart.length - 2}` : ''}`
     : '';
 
   const addToCart = (handle) => {
@@ -111,6 +111,8 @@ const PreorderPage = () => {
         handle,
         title: sku?.title || handle,
         strength: sku?.strength || sku?.size || '',
+        purityString: sku?.purityString || sku?.purity || '',
+        description: sku?.description || '',
         qty: 1,
       }];
     });
@@ -125,24 +127,29 @@ const PreorderPage = () => {
         const mapped = (Array.isArray(items) ? items : []).map((item) => {
           const strength = item.strength || item.size || '';
           const purityRaw = (item.purity_string || item.purity || '').toString().trim();
-          let purity = purityRaw;
-          if (!purity || /^\d+(\.\d+)?$/.test(purity)) {
-            const num = Number(purity);
+          const description = (item.description || item.overview || '').toString().trim();
+          let purityLabel = purityRaw;
+
+          if (!purityLabel || /^\d+(\.\d+)?$/.test(purityLabel)) {
+            const num = Number(purityLabel);
             if (Number.isFinite(num) && num > 0 && num <= 1.5) {
-              purity = `Purity ≥${Math.round(num * 100)}% (HPLC-verified)`;
+              purityLabel = `Purity >=${Math.round(num * 100)}% (HPLC-verified)`;
             } else if (Number.isFinite(num) && num > 1.5 && num <= 100) {
-              purity = `Purity ≥${Math.round(num)}% (HPLC-verified)`;
+              purityLabel = `Purity >=${Math.round(num)}% (HPLC-verified)`;
             } else {
-              purity = DEFAULT_PURITY;
+              purityLabel = DEFAULT_PURITY;
             }
           }
+
           return {
             handle: item.handle || item.slug || item.id,
             title: item.name || item.title || item.handle,
             strength,
-            purity,
+            purity: purityLabel,
+            purityString: purityRaw || purityLabel,
+            description,
           };
-        }).filter((item) => item.handle && item.title);
+        }).filter((row) => row.handle && row.title);
 
         if (active && mapped.length) setCatalog(mapped);
         else if (active) setCatalog(catalogFallback);
@@ -208,16 +215,31 @@ const PreorderPage = () => {
 
     try {
       for (const item of cart) {
-      await submitPreorderRequest({
-        memberEmail: email.trim(),
-        productHandle: item.handle,
-        productTitle: item.title,
-        requestedQty: item.qty,
-        customerName: fullName.trim(),
-        phone: phone.trim(),
-        notes: notes.trim(),
-      });
-    }
+
+        await submitPreorderRequest({
+
+          memberEmail: email.trim(),
+
+          productHandle: item.handle,
+
+          productTitle: item.title,
+
+          purityString: item.purityString || '',
+
+          productDescription: item.description || '',
+
+          requestedQty: item.qty,
+
+          customerName: fullName.trim(),
+
+          phone: phone.trim(),
+
+          notes: notes.trim(),
+
+        });
+
+      }
+
       setSuccessMessage(text.success(cart.length));
       setCart([]);
       setSelectedHandle('');
@@ -309,6 +331,13 @@ const PreorderPage = () => {
                     {sku.purity && (
                       <p className="text-[11px] font-semibold text-brand-navy/60 dark:text-gray-400">
                         {sku.purity}
+                      </p>
+                    )}                    {sku.description && (
+                      <p
+                        className="mt-2 text-[11px] leading-relaxed text-brand-navy/60 dark:text-gray-400"
+                        style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}
+                      >
+                        {sku.description}
                       </p>
                     )}
                   </button>
@@ -415,7 +444,14 @@ const PreorderPage = () => {
                           className="flex items-center gap-3"
                         >
                           <div className="flex-1">
-                            <p className="text-sm font-bold text-brand-navy dark:text-gray-100">{item.title}</p>
+                            <p className="text-sm font-bold text-brand-navy dark:text-gray-100">{item.title}</p>\n                            {item.description && (
+                              <p
+                                className="mt-1 text-[11px] text-brand-navy/60 dark:text-gray-400"
+                                style={{ display: '-webkit-box', WebkitLineClamp: 1, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}
+                              >
+                                {item.description}
+                              </p>
+                            )}
                             {item.strength && (
                               <p className="text-[11px] uppercase tracking-widest text-brand-navy/60 dark:text-gray-400">
                                 {item.strength}
@@ -531,3 +567,11 @@ const PreorderPage = () => {
 };
 
 export default PreorderPage;
+
+
+
+
+
+
+
+

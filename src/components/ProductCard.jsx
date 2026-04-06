@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { Plus, Beaker } from 'lucide-react';
 import CatalogImage from './CatalogImage';
 
@@ -41,8 +41,10 @@ const ProductCard = ({
   const stockLabel = inStock ? 'IN STOCK' : 'OUT OF STOCK';
   const stockClass = inStock ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-600 dark:text-red-400';
   const price = product?.price_vip ?? product?.priceVip;
+  const purityString = String(product?.purity_string ?? product?.purity ?? '').trim();
+  const description = String(product?.description ?? product?.overview ?? '').trim();
   const lowStockLabel = stockMeta.hasNumericStock && stockMeta.isLowStock
-    ? (stockMeta.stock <= Math.max(2, Math.floor(stockMeta.threshold / 2)) ? `ONLY ${stockMeta.stock} LEFT` : `LOW STOCK · ${stockMeta.stock} LEFT`)
+    ? (stockMeta.stock <= Math.max(2, Math.floor(stockMeta.threshold / 2)) ? `ONLY ${stockMeta.stock} LEFT` : `LOW STOCK - ${stockMeta.stock} LEFT`)
     : '';
 
   return (
@@ -83,8 +85,23 @@ const ProductCard = ({
             {product.name}
           </h3>
           <p className="text-sm font-medium text-brand-navy/50 dark:text-gray-400 mt-1">
-            {product.strength}{price ? ` • $${price}` : ''}
+            {product.strength}{price ? ` - $${price}` : ''}
           </p>
+          {purityString ? (
+            <p className="mt-2 text-xs font-semibold text-brand-navy/60 dark:text-gray-400">
+              {purityString}
+            </p>
+          ) : null}
+          {description ? (
+            <div className="mt-3 border-t border-brand-navy/10 pt-3 dark:border-white/10">
+              <p
+                className="text-xs leading-relaxed text-brand-navy/60 dark:text-gray-400"
+                style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}
+              >
+                {description}
+              </p>
+            </div>
+          ) : null}
         </div>
 
         <div className="mt-auto flex flex-col gap-2">
@@ -127,3 +144,4 @@ const ProductCard = ({
 };
 
 export default ProductCard;
+

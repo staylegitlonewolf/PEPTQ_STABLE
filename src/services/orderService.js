@@ -1,4 +1,4 @@
-import { APPS_SCRIPT_COMMAND_URL } from './api';
+﻿import { APPS_SCRIPT_COMMAND_URL } from './api';
 import { toEmbeddableGoogleDriveUrl } from '../utils/driveLinks';
 import { buildSiteLayoutMap } from '../content/siteEditorConfig';
 
@@ -332,6 +332,8 @@ const normalizePreorderRecord = (row = {}) => ({
   phone: normalizeText(row.phone),
   product_handle: normalizeText(row.product_handle).toLowerCase(),
   product_title: normalizeText(row.product_title),
+  purity_string: normalizeText(row.purity_string || row.purity || ''),
+  product_description: normalizeText(row.product_description || row.description || row.overview || ''),
   requested_qty: Math.max(1, Number(row.requested_qty || 1)),
   status: normalizeText(row.status).toUpperCase() || 'PENDING',
   owner_notes: normalizeText(row.owner_notes),
@@ -449,14 +451,27 @@ export const submitPreorderRequest = async ({
   memberEmail,
   productHandle,
   productTitle = '',
+  purityString = '',
+  productDescription = '',
   requestedQty = 1,
+  customerName = '',
+  businessName = '',
+  phone = '',
+  notes = '',
   catalogSource = DEFAULT_CATALOG_SOURCE,
 }) => {
   const email = normalizeEmail(memberEmail);
   const handle = normalizeText(productHandle).toLowerCase();
   const title = normalizeText(productTitle);
+  const purity = normalizeText(purityString);
+  const description = normalizeText(productDescription);
   const quantity = Math.max(1, Math.round(Number(requestedQty || 1)));
   const normalizedCatalogSource = normalizeText(catalogSource).toUpperCase();
+
+  const fullName = normalizeText(customerName);
+  const resolvedBusinessName = normalizeText(businessName);
+  const resolvedPhone = normalizeText(phone);
+  const resolvedNotes = normalizeText(notes);
 
   if (!email) throw new Error('Member email is required.');
   if (!handle) throw new Error('Product handle is required.');
@@ -475,8 +490,14 @@ export const submitPreorderRequest = async ({
   await postCommand({
     command: 'SUBMIT_PREORDER',
     member_email: email,
+    full_name: fullName,
+    business_name: resolvedBusinessName,
+    phone: resolvedPhone,
+    notes: resolvedNotes,
     product_handle: handle,
     product_title: title,
+    purity_string: purity,
+    product_description: description,
     requested_qty: quantity,
     ...(normalizedCatalogSource ? { catalog_source: normalizedCatalogSource } : {}),
   });
@@ -485,11 +506,13 @@ export const submitPreorderRequest = async ({
     timestamp,
     preorder_id: preorderId,
     member_email: email,
-    full_name: '',
-    business_name: '',
-    phone: '',
+    full_name: fullName,
+    business_name: resolvedBusinessName,
+    phone: resolvedPhone,
     product_handle: handle,
     product_title: title || handle,
+    purity_string: purity,
+    product_description: description,
     requested_qty: quantity,
     status: 'PENDING',
     owner_notes: '',
@@ -589,7 +612,7 @@ export const getLocalOwnerCatalogSnapshot = () => {
   if (Array.isArray(cached) && cached.length) {
     return cached.map(normalizeOwnerCatalogRow).filter((item) => item.handle);
   }
-  // No local cache yet — caller should trigger fetchOwnerCatalogSnapshot to populate from backend.
+  // No local cache yet â€” caller should trigger fetchOwnerCatalogSnapshot to populate from backend.
   return [];
 };
 
@@ -2015,3 +2038,4 @@ export const createProformaInvoiceHtml = (order) => {
     </body>
   </html>`;
 };
+

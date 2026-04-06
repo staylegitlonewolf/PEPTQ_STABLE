@@ -1,4 +1,4 @@
-const CATALOG_HEADERS_ = [
+﻿const CATALOG_HEADERS_ = [
   "slug",
   "title",
   "description",
@@ -82,6 +82,7 @@ function buildBetaCatalogItemFromRow_(row, headerMap, includePrivileged, sourceS
   const product = toTextOrEmpty_(row[(headerMap.product || 1) - 1]);
   const strength = toTextOrEmpty_(row[(headerMap.strength || 1) - 1]);
   const purityString = headerMap.purity_string ? toTextOrEmpty_(row[headerMap.purity_string - 1]) : "";
+  const description = headerMap.description ? toTextOrEmpty_(row[headerMap.description - 1]) : "";
   const rawPrice = headerMap.price_usd ? row[headerMap.price_usd - 1] : "";
   const priceUsd = Number(rawPrice);
   const statusColumn = headerMap.status || headerMap.statis;
@@ -95,7 +96,7 @@ function buildBetaCatalogItemFromRow_(row, headerMap, includePrivileged, sourceS
     title: product,
     name: product,
     strength: strength,
-    description: "",
+    description: description,
     purity_string: purityString,
     purity: purityString,
     inventory: "",
@@ -1291,3 +1292,4 @@ function toFirestoreValue_(value) {
 
   return { stringValue: String(value) };
 }
+
