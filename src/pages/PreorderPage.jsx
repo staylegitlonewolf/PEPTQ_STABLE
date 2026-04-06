@@ -10,6 +10,12 @@ const MAX_VISIBLE_CART_ITEMS = 5;
 const CART_ITEM_GAP_PX = 12;
 
 const DEFAULT_PURITY = 'Purity >=99% (HPLC-verified)';
+const sanitizeInline = (value) => String(value || '')
+  .replace(/\\n/g, ' ')
+  .replace(/[\r\n]+/g, ' ')
+  .replace(/\s+/g, ' ')
+  .trim();
+
 const SKU_CATALOG = [
   { handle: '5-AMINO-1MQ-10MG', title: '5-Amino 1MQ 10mg', purity: DEFAULT_PURITY },
   { handle: 'BPC-157', title: 'BPC-157', purity: DEFAULT_PURITY },
@@ -68,8 +74,8 @@ const PreorderPage = () => {
     success: (count) => es
       ? `Preorden enviada para ${count} item(s). Te contactaremos pronto.`
       : `Pre-order submitted for ${count} item(s). We will contact you soon.`,
-    stepOne: es ? 'Paso 1 Â· Selecciona SKU' : 'Step 1 Â· Select SKUs',
-    stepTwo: es ? 'Paso 2 Â· Revisa y envia' : 'Step 2 Â· Review & submit',
+    stepOne: es ? 'Paso 1 - Selecciona SKU' : 'Step 1 - Select SKUs',
+    stepTwo: es ? 'Paso 2 - Revisa y envia' : 'Step 2 - Review & submit',
     cartButtonLabel: es ? 'Abrir carrito de preorden' : 'Open pre-order cart',
     cartButtonHint: es ? 'Selecciona SKU para continuar' : 'Select SKUs to continue',
     cartButtonReady: es ? 'Revisa carrito y continua al formulario' : 'Review cart and continue to the form',
@@ -94,7 +100,7 @@ const PreorderPage = () => {
   const catalogFallback = useMemo(() => SKU_CATALOG, []);
   const cartItemCount = cart.reduce((sum, item) => sum + item.qty, 0);
   const cartPreview = cart.length
-    ? `${cart.slice(0, 2).map((item) => item.title).join(' Â· ')}${cart.length > 2 ? ` +${cart.length - 2}` : ''}`
+    ? `${cart.slice(0, 2).map((item) => item.title).join(' - ')}${cart.length > 2 ? ` +${cart.length - 2}` : ''}`
     : '';
 
   const addToCart = (handle) => {
@@ -109,10 +115,10 @@ const PreorderPage = () => {
       const sku = catalog.find((s) => s.handle === handle);
       return [...prev, {
         handle,
-        title: sku?.title || handle,
+        title: sanitizeInline(sku?.title || handle),
         strength: sku?.strength || sku?.size || '',
         purityString: sku?.purityString || sku?.purity || '',
-        description: sku?.description || '',
+        description: sanitizeInline(sku?.description || ''),
         qty: 1,
       }];
     });
@@ -127,7 +133,7 @@ const PreorderPage = () => {
         const mapped = (Array.isArray(items) ? items : []).map((item) => {
           const strength = item.strength || item.size || '';
           const purityRaw = (item.purity_string || item.purity || '').toString().trim();
-          const description = (item.description || item.overview || '').toString().trim();
+          const description = sanitizeInline((item.description || item.overview || '').toString());
           let purityLabel = purityRaw;
 
           if (!purityLabel || /^\d+(\.\d+)?$/.test(purityLabel)) {
@@ -143,7 +149,7 @@ const PreorderPage = () => {
 
           return {
             handle: item.handle || item.slug || item.id,
-            title: item.name || item.title || item.handle,
+            title: sanitizeInline(item.name || item.title || item.handle),
             strength,
             purity: purityLabel,
             purityString: purityRaw || purityLabel,
@@ -206,7 +212,7 @@ const PreorderPage = () => {
       return;
     }
     if (!acknowledged) {
-      setSubmitError(es ? 'Confirma la política de preorden.' : 'Please acknowledge the preorder policy.');
+      setSubmitError(es ? 'Confirma la politica de preorden.' : 'Please acknowledge the preorder policy.');
       return;
     }
     setIsSubmitting(true);

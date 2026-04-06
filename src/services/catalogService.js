@@ -1,5 +1,6 @@
 import { APPS_SCRIPT_COMMAND_URL } from './api';
 import { getLocalOwnerCatalogSnapshot } from './orderService';
+import catalogV2Snapshot from '../content/catalog_v2_snapshot.json';
 
 const APPROVED_ROLES = new Set(['MEMBER', 'VIP', 'OWNER', 'INSTITUTIONAL']);
 const AUTH_STORAGE_KEY = 'peptq_auth_v1';
@@ -11,17 +12,35 @@ const DEFAULT_CATALOG_SOURCE = String(
   import.meta.env.VITE_CATALOG_SOURCE || (import.meta.env.VITE_BETA_MODE === 'true' ? 'BETA' : '')
 ).trim().toUpperCase();
 
-// ─── Normalizers ─────────────────────────────────────────────────────────────
+// --- Normalizers -------------------------------------------------------------
 const normalizeRole  = (v) => String(v || '').trim().toUpperCase();
 const normalizeText  = (v) => String(v || '').trim();
 const normalizeEmail = (v) => normalizeText(v).toLowerCase();
+// Inline UI text sometimes arrives with literal \"\\n\" sequences from Sheets exports.
+// Strip display-hostile separators for UI rendering.
+const normalizeInlineText = (v) =>
+  normalizeText(v)
+    .replace(/\\n/g, ' ')
+    .replace(/[\r\n]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+const normalizeList = (value) => {
+  if (Array.isArray(value)) return value.map(normalizeInlineText).filter(Boolean);
+  const text = normalizeText(value);
+  if (!text) return [];
+  return text
+    .split(/\s*\|\s*|[\r\n]+/g)
+    .map(normalizeInlineText)
+    .filter(Boolean);
+};
 const normalizeSlug  = (v) =>
   normalizeText(v)
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '');
 
-// ─── Auth helpers ─────────────────────────────────────────────────────────────
+// --- Auth helpers -------------------------------------------------------------
 const loadAuthSession = () => {
   if (typeof window === 'undefined') return null;
   try {
@@ -43,7 +62,7 @@ const loadSessionRole = () => {
   return normalizeRole(session?.role) || 'GUEST';
 };
 
-// ─── Backend catalog fetch ────────────────────────────────────────────────────
+// --- Backend catalog fetch ----------------------------------------------------
 /**
  * Fetches the catalog from the Apps Script backend (GET_CATALOG).
  * Results are cached in sessionStorage for CATALOG_CACHE_TTL_MS milliseconds
@@ -87,7 +106,7 @@ const fetchBackendCatalog = async (role = 'GUEST') => {
           cacheKey,
           JSON.stringify({ ts: Date.now(), data: items, cachedRole: role, cachedSource: catalogSource })
         );
-      } catch { /* sessionStorage full – skip */ }
+      } catch { /* sessionStorage full - skip */ }
     }
     return items;
   } catch (err) {
@@ -96,7 +115,7 @@ const fetchBackendCatalog = async (role = 'GUEST') => {
   }
 };
 
-// ─── Field extraction helpers ─────────────────────────────────────────────────
+// --- Field extraction helpers -------------------------------------------------
 const extractStrengthFromText = (title = '', handle = '') => {
   const sources = [normalizeText(title), normalizeText(handle).replace(/-/g, ' ')];
   for (const source of sources) {
@@ -122,11 +141,11 @@ const buildTechnicalData = ({ purity = '', formula = '', mass = '', cas = '', fo
   return rows.map(([label, v]) => `${label}: ${normalizeText(v)}`).join(' | ');
 };
 
-// ─── Row normalizers ──────────────────────────────────────────────────────────
+// --- Row normalizers ----------------------------------------------------------
 const toStorefrontCatalogItem = (row = {}, fallback = null) => {
   const handle   = normalizeText(row.handle || row.slug || row.id || fallback?.handle || fallback?.id);
   const slug     = normalizeSlug(row.slug || row.handle || row.id || fallback?.slug || fallback?.handle || fallback?.id);
-  const rawTitle = normalizeText(row.title || row.name || fallback?.title || fallback?.name || handle);
+  const rawTitle = normalizeInlineText(row.title || row.name || fallback?.title || fallback?.name || handle);
   const explicitStrength = normalizeText(row.strength || fallback?.strength);
   const inferredStrength = explicitStrength || extractStrengthFromText(rawTitle, slug);
   const name     = stripStrengthFromTitle(rawTitle, inferredStrength) || normalizeText(fallback?.name || handle);
@@ -136,7 +155,21 @@ const toStorefrontCatalogItem = (row = {}, fallback = null) => {
   const cas      = normalizeText(row.cas_number || row.cas || fallback?.cas);
   const storage  = normalizeText(row.storage_notes || row.storage || fallback?.storage);
   const shipping = normalizeText(row.shipping_notes || row.shipping || fallback?.shipping);
-  const description = normalizeText(row.description || row.overview || fallback?.description || fallback?.overview);
+  const description = normalizeInlineText(row.description || row.overview || fallback?.description || fallback?.overview);
+  const descriptionShort = normalizeInlineText(row.description_short || row.descriptionShort || fallback?.descriptionShort);
+  const productTitle = normalizeInlineText(row.product_title || row.productTitle || fallback?.productTitle);
+  const classHint = normalizeInlineText(row.class || row.class_hint || row.classHint || fallback?.classHint);
+  const keyFeatures = normalizeList(row.key_features || row.keyFeatures || fallback?.keyFeatures);
+  const researchFocusNonClinical = normalizeList(
+    row.research_focus_non_clinical || row.researchFocusNonClinical || fallback?.researchFocusNonClinical
+  );
+  const researchApplicationsNonClinical = normalizeList(
+    row.research_applications_non_clinical || row.researchApplicationsNonClinical || fallback?.researchApplicationsNonClinical
+  );
+  const notesForInvestigators = normalizeInlineText(
+    row.notes_for_investigators || row.notesForInvestigators || fallback?.notesForInvestigators
+  );
+  const regulatoryUse = normalizeInlineText(row.regulatory_use || row.regulatoryUse || fallback?.regulatoryUse);
   const image    = normalizeText(row.image_path || row.image || fallback?.image);
   const coaUrl   = normalizeText(row.qr_coa_link || row.coaUrl || fallback?.coaUrl);
   const bulkStock       = row.bulk_stock ?? row.bulkStock ?? fallback?.bulk_stock ?? fallback?.bulkStock ?? null;
@@ -157,6 +190,14 @@ const toStorefrontCatalogItem = (row = {}, fallback = null) => {
     strength: inferredStrength,
     purity, formula, mass, cas, description,
     overview: description || normalizeText(fallback?.overview),
+    productTitle,
+    descriptionShort,
+    classHint,
+    keyFeatures,
+    researchFocusNonClinical,
+    researchApplicationsNonClinical,
+    notesForInvestigators,
+    regulatoryUse,
     solubility, storage, form, shipping, coaUrl, image, technicalData,
     safetyInfo: normalizeText(row.safetyInfo || row.researchUseSafetyInfo || row.research_usesafetyInfo || fallback?.safetyInfo),
     priceVip,
@@ -173,7 +214,45 @@ const toStorefrontCatalogItem = (row = {}, fallback = null) => {
   };
 };
 
-// ─── Dataset builder (uses live backend rows + owner local snapshot overlay) ──
+// --- Dataset builder (uses live backend rows + owner local snapshot overlay) --
+const getBundledCatalogV2Rows = () => {
+  const entries = Array.isArray(catalogV2Snapshot?.entries) ? catalogV2Snapshot.entries : [];
+  return entries
+    .map((entry) => {
+      if (!entry) return null;
+      const slug = normalizeSlug(entry.slug);
+      if (!slug) return null;
+      return {
+        handle: slug,
+        slug,
+        title: entry.title,
+        strength: entry.strength,
+        product_title: entry.product_title,
+        description: entry.description,
+        description_short: entry.description_short,
+        class: entry.class,
+        key_features: entry.key_features,
+        research_focus_non_clinical: entry.research_focus_non_clinical,
+        research_applications_non_clinical: entry.research_applications_non_clinical,
+        notes_for_investigators: entry.notes_for_investigators,
+        regulatory_use: entry.regulatory_use,
+        purity_string: entry.purity_string,
+        formula: entry.formula,
+        molecular_mass: entry.molecular_mass,
+        cas_number: entry.cas_number,
+        storage_notes: entry.storage_notes,
+        shipping_notes: entry.shipping_notes,
+        qr_coa_link: entry.qr_coa_link,
+        internal_sku: entry.internal_sku,
+        price_vip: entry.price_vip,
+        inventory: entry.inventory,
+        image_path: entry.product_image_url,
+        source_sheet: 'BUNDLED_CATALOG_V2',
+      };
+    })
+    .filter(Boolean);
+};
+
 const buildCatalogDataset = async (role = 'GUEST') => {
   const backendRows = await fetchBackendCatalog(role);
   const itemMap = new Map();
@@ -192,6 +271,15 @@ const buildCatalogDataset = async (role = 'GUEST') => {
     if (!key) continue;
     const fallback = itemMap.get(key) || null;
     itemMap.set(key, toStorefrontCatalogItem(row, fallback));
+  }
+
+  // If we have no backend data (offline / Apps Script unavailable), fall back to the bundled catalog snapshot.
+  if (itemMap.size === 0) {
+    for (const row of getBundledCatalogV2Rows()) {
+      const key = normalizeSlug(row.handle || row.slug || row.id);
+      if (!key) continue;
+      itemMap.set(key, toStorefrontCatalogItem(row));
+    }
   }
 
   return [...itemMap.values()]
@@ -213,7 +301,7 @@ const toPublicItem = (item) => {
   return next;
 };
 
-// ─── Public API ───────────────────────────────────────────────────────────────
+// --- Public API ---------------------------------------------------------------
 export const getCatalogReferenceSuggestions = async () => {
   const role = loadSessionRole();
   const source = await buildCatalogDataset(role);
@@ -251,7 +339,7 @@ export const getCatalogStrengthOptions = async (role) => {
   return [...new Set(strengths)];
 };
 
-// ─── Asset helpers ────────────────────────────────────────────────────────────
+// --- Asset helpers ------------------------------------------------------------
 export const getAssets = async () => {
   const params = new URLSearchParams({ command: 'GET_ASSETS' });
   try {
@@ -300,7 +388,7 @@ export const deleteAsset = async (assetId) => {
   return payload;
 };
 
-// ─── PubChem ──────────────────────────────────────────────────────────────────
+// --- PubChem ------------------------------------------------------------------
 const fetchPubChemProxy = async (query) => {
   const actorEmail = loadOwnerActorEmail();
   if (!actorEmail) throw new Error('Owner session required for PubChem autofill.');
@@ -361,7 +449,7 @@ export const fetchPubChemData = async (query) => {
   }
 };
 
-// ─── Invalidate session cache (call after owner catalog mutations) ─────────────
+// --- Invalidate session cache (call after owner catalog mutations) -------------
 export const invalidateCatalogCache = () => {
   if (typeof window !== 'undefined') {
     try { window.sessionStorage.removeItem(CATALOG_CACHE_KEY); } catch { /* ignore */ }

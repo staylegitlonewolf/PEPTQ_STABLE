@@ -530,16 +530,16 @@ function Sidebar({
                 ? 'Todos los materiales estan destinados solo para uso de investigacion en laboratorio.'
                 : 'All materials are intended for laboratory research use only.'}
             </p>
-            {!isAuthenticated && !BETA_MODE && (
-              <button
-                type="button"
-                onClick={onPortalAccess}
-                className="mt-3 inline-flex items-center justify-center rounded-lg bg-brand-orange px-3 py-2 text-[10px] font-black uppercase tracking-widest text-white transition hover:bg-[#e06d00]"
-              >
-                PORTAL
-              </button>
-            )}
-            <div className="mt-3">
+            <div className="mt-3 flex flex-col items-start gap-2">
+              {!isAuthenticated && !BETA_MODE && (
+                <button
+                  type="button"
+                  onClick={onPortalAccess}
+                  className="inline-flex items-center justify-center rounded-lg bg-brand-orange px-3 py-2 text-[10px] font-black uppercase tracking-widest text-white transition hover:bg-[#e06d00]"
+                >
+                  PORTAL
+                </button>
+              )}
               <Link
                 to="/contact"
                 className="inline-block text-xs font-bold text-brand-navy/70 dark:text-gray-300 underline underline-offset-2 hover:text-brand-orange"
@@ -734,19 +734,19 @@ function MobileMenuDrawer({
                 ? 'Todos los materiales estan destinados solo para uso de investigacion en laboratorio.'
                 : 'All materials are intended for laboratory research use only.'}
             </p>
-            {!isAuthenticated && !BETA_MODE && (
-              <button
-                type="button"
-                onClick={() => {
-                  onClose();
-                  onPortalAccess();
-                }}
-                className="mt-3 inline-flex items-center justify-center rounded-lg bg-brand-orange px-3 py-2 text-[10px] font-black uppercase tracking-widest text-white transition hover:bg-[#e06d00]"
-              >
-                PORTAL
-              </button>
-            )}
-            <div className="mt-3">
+            <div className="mt-3 flex flex-col items-start gap-2">
+              {!isAuthenticated && !BETA_MODE && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    onClose();
+                    onPortalAccess();
+                  }}
+                  className="inline-flex items-center justify-center rounded-lg bg-brand-orange px-3 py-2 text-[10px] font-black uppercase tracking-widest text-white transition hover:bg-[#e06d00]"
+                >
+                  PORTAL
+                </button>
+              )}
               <Link
                 to="/contact"
                 onClick={onClose}

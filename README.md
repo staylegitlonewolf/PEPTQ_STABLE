@@ -13,12 +13,15 @@ PEPTQ_STABLE is the full portal build (login/profile/owner tools) intended to ru
   - Preorders
   - COA / verify lookups
 
-## Catalog Description Support
+## Catalog Data + V2 Snapshot Fallback
 
-The catalog now supports a `description` field sourced from the operations spreadsheet (CatalogBeta and/or Catalog). The UI surfaces:
-
-- A short, 2-line description preview in catalog cards
-- The first line of description in the Pre-Order cart
+- Catalog items support a `description` field sourced from the operations spreadsheet (CatalogBeta and/or Catalog).
+- The UI surfaces:
+  - A short, 2-line description preview in catalog cards
+  - The first line of description in the Pre-Order cart
+  - An expandable description (Read more / Show less) in the product detail modal
+- If Apps Script is unavailable (offline / endpoint down), the app falls back to the bundled snapshot at `src/content/catalog_v2_snapshot.json` so the catalog can still render.
+- Supported optional V2 fields (shown in the product modal when present): `key_features`, `research_focus_non_clinical`, `research_applications_non_clinical`, `notes_for_investigators`, `regulatory_use`.
 
 ## Asset Rules (Important)
 

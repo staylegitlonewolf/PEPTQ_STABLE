@@ -53,6 +53,7 @@ const ProductModal = ({
   const [activeProduct, setActiveProduct] = useState(product);
   const [activeTab, setActiveTab] = useState(0);
   const [requestedQuantity, setRequestedQuantity] = useState(Math.max(1, Number(product?.quantity || 1)));
+  const [isOverviewExpanded, setIsOverviewExpanded] = useState(false);
   const navigate = useNavigate();
   const { reduceMotion } = useAccessibility();
   const dialogRef = useAccessibleOverlay({ isOpen, onClose });
@@ -86,6 +87,7 @@ const ProductModal = ({
     setActiveProduct(prod);
     setActiveTab(0);
     setRequestedQuantity(Math.max(1, Number(prod?.quantity || 1)));
+    setIsOverviewExpanded(false);
     onNavigate(prod);
   };
 
@@ -460,6 +462,12 @@ const ProductModal = ({
   ];
 
   const overviewText = activeProduct.overview || activeProduct.description;
+  const hasExpandableOverview = String(overviewText || '').trim().length > 260;
+  const keyFeatures = Array.isArray(activeProduct.keyFeatures) ? activeProduct.keyFeatures : [];
+  const researchFocus = Array.isArray(activeProduct.researchFocusNonClinical) ? activeProduct.researchFocusNonClinical : [];
+  const researchApplications = Array.isArray(activeProduct.researchApplicationsNonClinical) ? activeProduct.researchApplicationsNonClinical : [];
+  const notesForInvestigators = String(activeProduct.notesForInvestigators || '').trim();
+  const regulatoryUse = String(activeProduct.regulatoryUse || '').trim();
   const showTechData = activeProduct.show_tech_data !== false;
   const ownerSettings = getLocalOwnerSettings();
   const enable3DViewer = ownerSettings?.enable_3d_viewer !== false;
@@ -621,16 +629,77 @@ const ProductModal = ({
                     </span>
                     {stockMeta.hasNumericStock && stockMeta.isLowStock ? (
                       <span className="inline-flex rounded-full border border-brand-orange/30 bg-brand-orange/10 px-2.5 py-1 text-[10px] font-black uppercase tracking-widest text-brand-orange">
-                        {stockMeta.stock <= Math.max(2, Math.floor(stockMeta.threshold / 2)) ? `Only ${stockMeta.stock} left` : `Low stock · ${stockMeta.stock} left`}
+                        {stockMeta.stock <= Math.max(2, Math.floor(stockMeta.threshold / 2)) ? `Only ${stockMeta.stock} left` : `Low stock - ${stockMeta.stock} left`}
                       </span>
                     ) : null}
                   </div>
-                  <p id={dialogDescriptionId} className="text-sm sm:text-base text-gray-600 dark:text-gray-300 leading-relaxed mt-2 wrap-break-word">
-                    {overviewText}
-                  </p>
+                  <div id={dialogDescriptionId} className="mt-2">
+  <p
+    className="text-sm sm:text-base text-gray-600 dark:text-gray-300 leading-relaxed wrap-break-word"
+    style={!isOverviewExpanded && hasExpandableOverview ? { display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' } : undefined}
+  >
+    {overviewText}
+  </p>
+  {hasExpandableOverview ? (
+    <button
+      type="button"
+      onClick={() => setIsOverviewExpanded((prev) => !prev)}
+      className="mt-2 inline-flex text-[10px] font-black uppercase tracking-[0.22em] text-brand-orange hover:underline underline-offset-4"
+    >
+      {isOverviewExpanded ? 'Show less' : 'Read more'}
+    </button>
+  ) : null}
+</div>
                 </div>
 
-                <div className="border-t border-gray-100 dark:border-white/10 mb-4" />
+                {(keyFeatures.length || researchFocus.length || researchApplications.length || notesForInvestigators || regulatoryUse) ? (
+  <div className="mt-4 grid gap-3">
+    {keyFeatures.length ? (
+      <div className="rounded-2xl border border-brand-navy/10 dark:border-white/10 bg-white/70 dark:bg-white/5 p-4">
+        <p className="text-[11px] font-black uppercase tracking-[0.2em] text-brand-navy/60 dark:text-gray-300">Key Features</p>
+        <ul className="mt-2 space-y-2">
+          {keyFeatures.map((item) => (
+            <li key={item} className="text-sm text-brand-navy/70 dark:text-gray-200 leading-relaxed">{item}</li>
+          ))}
+        </ul>
+      </div>
+    ) : null}
+    {researchFocus.length ? (
+      <div className="rounded-2xl border border-brand-navy/10 dark:border-white/10 bg-white/70 dark:bg-white/5 p-4">
+        <p className="text-[11px] font-black uppercase tracking-[0.2em] text-brand-navy/60 dark:text-gray-300">Research Focus (Non-clinical)</p>
+        <ul className="mt-2 space-y-2">
+          {researchFocus.map((item) => (
+            <li key={item} className="text-sm text-brand-navy/70 dark:text-gray-200 leading-relaxed">{item}</li>
+          ))}
+        </ul>
+      </div>
+    ) : null}
+    {researchApplications.length ? (
+      <div className="rounded-2xl border border-brand-navy/10 dark:border-white/10 bg-white/70 dark:bg-white/5 p-4">
+        <p className="text-[11px] font-black uppercase tracking-[0.2em] text-brand-navy/60 dark:text-gray-300">Research Applications (Non-clinical)</p>
+        <ul className="mt-2 space-y-2">
+          {researchApplications.map((item) => (
+            <li key={item} className="text-sm text-brand-navy/70 dark:text-gray-200 leading-relaxed">{item}</li>
+          ))}
+        </ul>
+      </div>
+    ) : null}
+    {notesForInvestigators ? (
+      <div className="rounded-2xl border border-brand-navy/10 dark:border-white/10 bg-white/70 dark:bg-white/5 p-4">
+        <p className="text-[11px] font-black uppercase tracking-[0.2em] text-brand-navy/60 dark:text-gray-300">Notes For Investigators</p>
+        <p className="mt-2 text-sm text-brand-navy/70 dark:text-gray-200 leading-relaxed">{notesForInvestigators}</p>
+      </div>
+    ) : null}
+    {regulatoryUse ? (
+      <div className="rounded-2xl border border-brand-navy/10 dark:border-white/10 bg-brand-orange/5 dark:bg-white/5 p-4">
+        <p className="text-[11px] font-black uppercase tracking-[0.2em] text-brand-navy/60 dark:text-gray-300">Regulatory Use</p>
+        <p className="mt-2 text-sm text-brand-navy/70 dark:text-gray-200 leading-relaxed">{regulatoryUse}</p>
+      </div>
+    ) : null}
+  </div>
+) : null}
+
+<div className="border-t border-gray-100 dark:border-white/10 mb-4" />
 
                 <h3 className="text-xs font-black uppercase tracking-[0.18em] text-brand-navy/70 dark:text-gray-300 mb-2">
                   Technical Data
