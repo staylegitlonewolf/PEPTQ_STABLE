@@ -1122,9 +1122,19 @@ function AppLayout() {
   }));
   const showGuestWarning = !isOwnerRole;
   const shouldShowVerifiedWelcome = ['MEMBER', 'VIP', 'INSTITUTIONAL'].includes(role);
+  const normalizePublicAssetUrl = (value) => {
+    const raw = String(value || '').trim();
+    if (!raw) return '';
+    if (/^(https?:|data:|blob:)/i.test(raw)) return raw;
+    // Treat /foo.png and foo.png the same on GitHub Pages (prefix BASE_URL).
+    const cleaned = raw.replace(/^\/+/, '');
+    return publicAssetUrl(cleaned);
+  };
+
   const getAsset = (sectionId, fallback, assetFallbackId) => {
     const raw = getAssetUrl(sectionId, getAssetUrl(assetFallbackId || '', fallback));
-    return toEmbeddableGoogleDriveUrl(raw);
+    const normalized = normalizePublicAssetUrl(raw) || normalizePublicAssetUrl(fallback) || fallback;
+    return toEmbeddableGoogleDriveUrl(normalized);
   };
   const lightLogo = getAsset('WEBSITE_LIGHT_LOGO', DEFAULT_LOGO_URL, 'light');
   const darkLogo = getAsset('WEBSITE_DARK_LOGO', DEFAULT_LOGO_URL, 'dark');
