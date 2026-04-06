@@ -46,6 +46,7 @@ const DEFAULT_LOGO_URL = publicAssetUrl('logo.svg');
 
 const navItems = [
   { to: '/catalog', label: 'Catalog' },
+  { to: '/preorder', label: 'Pre-Order' },
   { to: '/coa', label: 'COA' },
   { to: '/about', label: 'About' },
   { to: '/mission', label: 'Mission' },
@@ -78,6 +79,7 @@ const ownerNavItems = [
 const SHELL_TRANSLATIONS = {
   es: {
     'Catalog': 'Catalogo',
+    'Pre-Order': 'Preorden',
     'COA': 'COA',
     'Search': 'Buscar',
     'Menu': 'Menu',
@@ -353,6 +355,7 @@ function Sidebar({
   supportExternal = false,
   lightLogo = DEFAULT_LOGO_URL,
   darkLogo = DEFAULT_LOGO_URL,
+  onOpenAccessibility = () => {},
 }) {
   const { theme, toggleTheme } = useTheme();
   const { language = 'en', setLanguage } = useAccessibility();
@@ -405,7 +408,15 @@ function Sidebar({
             />
           </Link>
 
-          <span aria-hidden="true" className="h-10 w-10" />
+          <button
+            type="button"
+            onClick={onOpenAccessibility}
+            className="h-10 w-10 inline-flex items-center justify-center rounded-lg border border-brand-navy/20 dark:border-white/20 bg-white dark:bg-white/5 hover:bg-brand-navy dark:hover:bg-brand-orange hover:text-white transition text-brand-navy dark:text-gray-200 justify-self-end"
+            aria-label="Accessibility settings"
+            title="Accessibility settings"
+          >
+            <Accessibility size={18} />
+          </button>
         </div>
 
         {!BETA_MODE && (
@@ -925,7 +936,6 @@ function Disclaimer({
   const researchUseDisclaimer = language === 'es'
     ? 'Todos los productos estan destinados estrictamente para fines de investigacion en laboratorio. Los productos no son para uso humano ni veterinario y no estan destinados a diagnosticar, tratar, curar o prevenir ninguna enfermedad. Al acceder a este sitio o comprar de PEPTQ, reconoces y aceptas que los materiales se usaran unicamente en cumplimiento con las regulaciones de investigacion aplicables.'
     : 'All products are intended strictly for laboratory research purposes only. Products are not for human or veterinary use and are not intended to diagnose, treat, cure, or prevent any disease. By accessing this site or purchasing from PEPTQ, you acknowledge and agree that materials will be used solely in compliance with applicable research regulations.';
-  const [isA11yPanelOpen, setIsA11yPanelOpen] = useState(false);
 
   return (
     <>
@@ -975,48 +985,6 @@ function Disclaimer({
         </footer>
       ) : null}
 
-      <>
-        <button
-          type="button"
-          aria-label="Open accessibility quick settings"
-          title="Accessibility settings"
-          onClick={() => setIsA11yPanelOpen(true)}
-          className="fixed right-4 top-20 lg:top-5 z-55 inline-flex h-11 w-11 items-center justify-center rounded-full border border-brand-orange/50 bg-white/90 dark:bg-[#111827]/90 text-brand-orange shadow-xl backdrop-blur hover:bg-brand-orange hover:text-white transition-colors"
-        >
-          <Accessibility size={18} />
-        </button>
-
-        {isA11yPanelOpen && (
-          <div className="fixed inset-0 z-60 flex items-stretch justify-end bg-transparent" onClick={() => setIsA11yPanelOpen(false)}>
-            <aside
-              onClick={(e) => e.stopPropagation()}
-              className="w-full max-w-md h-full bg-white dark:bg-[#0a0a0f] shadow-2xl border-l border-brand-navy/10 dark:border-white/10 p-5 overflow-y-auto"
-              role="dialog"
-              aria-label="Accessibility quick settings"
-            >
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-2">
-                  <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-brand-orange/10 text-brand-orange border border-brand-orange/30">
-                    <Accessibility size={18} />
-                  </span>
-                  <div>
-                    <p className="text-[11px] font-black uppercase tracking-[0.2em] text-brand-orange">Settings</p>
-                    <h2 className="text-lg font-black text-brand-navy dark:text-white">Accessibility (Quick)</h2>
-                  </div>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setIsA11yPanelOpen(false)}
-                  className="text-sm font-bold text-brand-navy dark:text-gray-200 hover:text-brand-orange"
-                >
-                  Close
-                </button>
-              </div>
-              <QuickAccessibilityPanel />
-            </aside>
-          </div>
-        )}
-      </>
     </>
   );
 }
@@ -1094,6 +1062,7 @@ function AppLayout() {
   };
   const [isSearchPanelOpen, setIsSearchPanelOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isA11yPanelOpen, setIsA11yPanelOpen] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(() => {
     if (typeof window === 'undefined') return false;
     return window.localStorage.getItem(SIDEBAR_COLLAPSE_STORAGE_KEY) === '1';
@@ -1390,6 +1359,7 @@ function AppLayout() {
           supportExternal={!isPageEnabled('support_page')}
           lightLogo={lightLogo}
           darkLogo={darkLogo}
+          onOpenAccessibility={() => setIsA11yPanelOpen(true)}
         />
 
         <div className="flex-1 min-w-0">
@@ -1533,6 +1503,49 @@ function AppLayout() {
             catalogTarget={catalogTarget}
           />
 
+          {/* Accessibility quick settings */}
+          <button
+            type="button"
+            aria-label="Open accessibility quick settings"
+            title="Accessibility settings"
+            onClick={() => setIsA11yPanelOpen(true)}
+            className="fixed right-4 top-20 lg:hidden z-55 inline-flex h-11 w-11 items-center justify-center rounded-full border border-brand-orange/50 bg-white/90 dark:bg-[#111827]/90 text-brand-orange shadow-xl backdrop-blur hover:bg-brand-orange hover:text-white transition-colors"
+          >
+            <Accessibility size={18} />
+          </button>
+
+          {isA11yPanelOpen && (
+            <div className="fixed inset-0 z-60 flex items-stretch justify-end bg-transparent" onClick={() => setIsA11yPanelOpen(false)}>
+              <aside
+                onClick={(e) => e.stopPropagation()}
+                className="w-full max-w-md h-full bg-white dark:bg-[#0a0a0f] shadow-2xl border-l border-brand-navy/10 dark:border-white/10 p-5 overflow-y-auto"
+                role="dialog"
+                aria-label="Accessibility quick settings"
+              >
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-2">
+                    <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-brand-orange/10 text-brand-orange border border-brand-orange/30">
+                      <Accessibility size={18} />
+                    </span>
+                    <div>
+                      <p className="text-[11px] font-black uppercase tracking-[0.2em] text-brand-orange">Settings</p>
+                      <h2 className="text-lg font-black text-brand-navy dark:text-white">Accessibility (Quick)</h2>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setIsA11yPanelOpen(false)}
+                    className="text-sm font-bold text-brand-navy dark:text-gray-200 hover:text-brand-orange"
+                  >
+                    Close
+                  </button>
+                </div>
+                <QuickAccessibilityPanel />
+              </aside>
+            </div>
+          )}
+
+
         </div>
       </div>
 
@@ -1547,8 +1560,4 @@ function AppLayout() {
 }
 
 export default App;
-
-
-
-
 

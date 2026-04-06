@@ -1,4 +1,4 @@
-﻿import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { ArrowLeft, Plus, Minus, Trash2, Sparkles, CheckCircle2, ShoppingBag } from 'lucide-react';
 import { submitPreorderRequest } from '../services/orderService';
 import { useAccessibility } from '../context/AccessibilityContext';
@@ -444,7 +444,8 @@ const PreorderPage = () => {
                           className="flex items-center gap-3"
                         >
                           <div className="flex-1">
-                            <p className="text-sm font-bold text-brand-navy dark:text-gray-100">{item.title}</p>\n                            {item.description && (
+                            <p className="text-sm font-bold text-brand-navy dark:text-gray-100">{item.title}</p>
+                            {item.description && (
                               <p
                                 className="mt-1 text-[11px] text-brand-navy/60 dark:text-gray-400"
                                 style={{ display: '-webkit-box', WebkitLineClamp: 1, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}
