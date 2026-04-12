@@ -19,7 +19,7 @@
       "strength": "10 MG",
       "display_title": "BPC-157 (10 MG)",
       "category_hint": "Peptides",
-      "product_title": "Synthetic peptide fragment utilized in laboratory models to evaluate cellular signaling associated with vascular response, cell migration, and extracellular matrix interactions - 10 MG",
+      "product_title": "Synthetic peptide fragment utilized in laboratory models to evaluate cellular signaling associated with vascular response, cell migration, and extracellular matrix interactions — 10 MG",
       "description": "Synthetic peptide fragment derived from a gastric peptide sequence, utilized in controlled research environments to investigate cellular communication pathways associated with angiogenesis, cytoskeletal organization, and extracellular matrix signaling under defined experimental conditions.",
       "description_short": "Synthetic peptide fragment derived from a gastric peptide sequence, utilized in controlled research environments to investigate cellular communication pathways associated with angiogenesis, cytoskeletal organization, and extracellular matrix signaling under defined experimental conditions.",
       "class": "Synthetic peptide fragment (gastric-derived analogue)",
@@ -51,7 +51,7 @@
       "inventory": null,
       "product_image_url": "",
       "source": {
-        "header": "BPC-157 - 10 MG"
+        "header": "BPC-157 — 10 MG"
       }
     },
     {
@@ -60,10 +60,10 @@
       "strength": "5 MG",
       "display_title": "AOD-9604 (5 MG)",
       "category_hint": "Peptides",
-      "product_title": "Peptide fragment modeled on the lipolytic domain of human growth hormone, utilized to evaluate adipocyte-specific signaling and metabolic pathway selectivity - 5 MG",
-      "description": "Peptide fragment derived from the C-terminal lipolytic region of human growth hormone (GH 176-191), utilized in controlled laboratory environments to investigate adipocyte metabolism, pathway selectivity, and signaling responses independent of full growth hormone receptor activation.",
-      "description_short": "Peptide fragment derived from the C-terminal lipolytic region of human growth hormone (GH 176-191), utilized in controlled laboratory environments to investigate adipocyte metabolism, pathway selectivity, and signaling responses independent of full growth hormone receptor activation.",
-      "class": "Synthetic peptide fragment (GH 176-191 analogue)",
+      "product_title": "Peptide fragment modeled on the lipolytic domain of human growth hormone, utilized to evaluate adipocyte-specific signaling and metabolic pathway selectivity — 5 MG",
+      "description": "Peptide fragment derived from the C-terminal lipolytic region of human growth hormone (GH 176–191), utilized in controlled laboratory environments to investigate adipocyte metabolism, pathway selectivity, and signaling responses independent of full growth hormone receptor activation.",
+      "description_short": "Peptide fragment derived from the C-terminal lipolytic region of human growth hormone (GH 176–191), utilized in controlled laboratory environments to investigate adipocyte metabolism, pathway selectivity, and signaling responses independent of full growth hormone receptor activation.",
+      "class": "Synthetic peptide fragment (GH 176–191 analogue)",
       "key_features": [
         "High-purity peptide fragment for targeted metabolic pathway research",
         "Lyophilized for enhanced stability and precise laboratory handling",
@@ -75,7 +75,7 @@
         "Pathway selectivity profiling relative to intact GH receptor signaling"
       ],
       "research_applications_non_clinical": [],
-      "notes_for_investigators": "Utilized in adipose-focused research models to isolate metabolic signaling pathways without broad GH-IGF axis activation, enabling targeted evaluation of lipid metabolism and pathway-specific responses.",
+      "notes_for_investigators": "Utilized in adipose-focused research models to isolate metabolic signaling pathways without broad GH–IGF axis activation, enabling targeted evaluation of lipid metabolism and pathway-specific responses.",
       "laboratory_insights": "",
       "regulatory_use": "For laboratory research use only. Not for human or veterinary use. No medical or dosing information provided.",
       "status": "PENDING",
@@ -92,7 +92,7 @@
       "inventory": null,
       "product_image_url": "",
       "source": {
-        "header": "AOD-9604 - 5 MG"
+        "header": "AOD-9604 — 5 MG"
       }
     },
     {
@@ -101,9 +101,9 @@
       "strength": "10 MG",
       "display_title": "CJC-1295 (NO DAC) (10 MG)",
       "category_hint": "Peptides",
-      "product_title": "Short-acting GHRH analogue utilized in controlled laboratory models to evaluate pulsatile growth hormone signaling, receptor activation timing, and endocrine pathway modulation - 10 MG",
-      "description": "Synthetic analogue of growth hormone-releasing hormone (GHRH) designed for controlled research applications to investigate pulsatile GH secretion dynamics, receptor-level activation timing, and downstream endocrine signaling under physiologic-pattern stimulation conditions.",
-      "description_short": "Synthetic analogue of growth hormone-releasing hormone (GHRH) designed for controlled research applications to investigate pulsatile GH secretion dynamics, receptor-level activation timing, and downstream endocrine signaling under physiologic-pattern stimulation conditions.",
+      "product_title": "Short-acting GHRH analogue utilized in controlled laboratory models to evaluate pulsatile growth hormone signaling, receptor activation timing, and endocrine pathway modulation — 10 MG",
+      "description": "Synthetic analogue of growth hormone–releasing hormone (GHRH) designed for controlled research applications to investigate pulsatile GH secretion dynamics, receptor-level activation timing, and downstream endocrine signaling under physiologic-pattern stimulation conditions.",
+      "description_short": "Synthetic analogue of growth hormone–releasing hormone (GHRH) designed for controlled research applications to investigate pulsatile GH secretion dynamics, receptor-level activation timing, and downstream endocrine signaling under physiologic-pattern stimulation conditions.",
       "class": "Short-acting GHRH receptor analogue (non-DAC formulation)",
       "key_features": [
         "High-purity GHRH analogue for pulsatile GH pathway research",
@@ -113,7 +113,7 @@
       "research_focus_non_clinical": [
         "GH/IGF-1 axis dynamics under pulsatile stimulation conditions",
         "Receptor activation timing, signal amplitude, and feedback modulation",
-        "Endocrine feedback loop modeling (GHRH-somatostatin interaction)"
+        "Endocrine feedback loop modeling (GHRH–somatostatin interaction)"
       ],
       "research_applications_non_clinical": [],
       "notes_for_investigators": "Utilized in endocrine signaling models where short-duration, physiologic GH pulses are required to evaluate temporal pathway dynamics and regulatory feedback mechanisms.",
@@ -133,7 +133,7 @@
       "inventory": null,
       "product_image_url": "",
       "source": {
-        "header": "CJC-1295 (NO DAC) - 10 MG"
+        "header": "CJC-1295 (NO DAC) — 10 MG"
       }
     },
     {
@@ -142,7 +142,7 @@
       "strength": "10 MG",
       "display_title": "IPAMORELIN (10 MG)",
       "category_hint": "Peptides",
-      "product_title": "Selective ghrelin-receptor agonist utilized in controlled laboratory models to evaluate targeted GH secretion signaling, receptor selectivity, and downstream metabolic pathway modulation - 10 MG",
+      "product_title": "Selective ghrelin-receptor agonist utilized in controlled laboratory models to evaluate targeted GH secretion signaling, receptor selectivity, and downstream metabolic pathway modulation — 10 MG",
       "description": "Synthetic pentapeptide engineered to selectively activate ghrelin (GHS-R1a) receptors, utilized in controlled research settings to investigate targeted growth hormone release, receptor-level selectivity, and downstream metabolic and endocrine signaling pathways with minimized off-target activity.",
       "description_short": "Synthetic pentapeptide engineered to selectively activate ghrelin (GHS-R1a) receptors, utilized in controlled research settings to investigate targeted growth hormone release, receptor-level selectivity, and downstream metabolic and endocrine signaling pathways with minimized off-target activity.",
       "class": "Selective ghrelin receptor agonist (growth hormone secretagogue)",
@@ -174,7 +174,7 @@
       "inventory": null,
       "product_image_url": "",
       "source": {
-        "header": "IPAMORELIN - 10 MG"
+        "header": "IPAMORELIN — 10 MG"
       }
     },
     {
@@ -183,9 +183,9 @@
       "strength": "10 MG",
       "display_title": "TESAMORELIN (10 MG)",
       "category_hint": "Peptides",
-      "product_title": "Stabilized GHRH analogue utilized in controlled laboratory models to evaluate sustained GH-axis activation, IGF-1-mediated signaling, and metabolic pathway modulation related to lipid handling and body-composition dynamics - 10 MG",
-      "description": "Synthetic stabilized analogue of growth hormone-releasing hormone (GHRH) utilized in controlled research environments to investigate sustained endogenous GH release, IGF-1-mediated anabolic signaling, and downstream metabolic effects with emphasis on lipid metabolism and body-composition-related endpoints.",
-      "description_short": "Synthetic stabilized analogue of growth hormone-releasing hormone (GHRH) utilized in controlled research environments to investigate sustained endogenous GH release, IGF-1-mediated anabolic signaling, and downstream metabolic effects with emphasis on lipid metabolism and body-composition-related endpoints.",
+      "product_title": "Stabilized GHRH analogue utilized in controlled laboratory models to evaluate sustained GH-axis activation, IGF-1–mediated signaling, and metabolic pathway modulation related to lipid handling and body-composition dynamics — 10 MG",
+      "description": "Synthetic stabilized analogue of growth hormone–releasing hormone (GHRH) utilized in controlled research environments to investigate sustained endogenous GH release, IGF-1–mediated anabolic signaling, and downstream metabolic effects with emphasis on lipid metabolism and body-composition–related endpoints.",
+      "description_short": "Synthetic stabilized analogue of growth hormone–releasing hormone (GHRH) utilized in controlled research environments to investigate sustained endogenous GH release, IGF-1–mediated anabolic signaling, and downstream metabolic effects with emphasis on lipid metabolism and body-composition–related endpoints.",
       "class": "Stabilized GHRH analogue (GH-axis modulator)",
       "key_features": [
         "High-purity stabilized GHRH analogue for sustained GH-axis signaling research",
@@ -215,7 +215,7 @@
       "inventory": null,
       "product_image_url": "",
       "source": {
-        "header": "TESAMORELIN - 10 MG"
+        "header": "TESAMORELIN — 10 MG"
       }
     },
     {
@@ -224,10 +224,10 @@
       "strength": "10 MG",
       "display_title": "TB-500 (10 MG)",
       "category_hint": "Peptides",
-      "product_title": "Thymosin beta4-derived peptide utilized in controlled laboratory models to investigate actin-mediated cellular organization, tissue remodeling processes, and coordinated repair-pathway signaling - 10 MG",
+      "product_title": "Thymosin β4–derived peptide utilized in controlled laboratory models to investigate actin-mediated cellular organization, tissue remodeling processes, and coordinated repair-pathway signaling — 10 MG",
       "description": "Synthetic peptide derived from thymosin beta-4, utilized in research environments to evaluate actin-binding interactions, cellular migration mechanisms, and coordinated tissue remodeling processes across multi-system biological models.",
       "description_short": "Synthetic peptide derived from thymosin beta-4, utilized in research environments to evaluate actin-binding interactions, cellular migration mechanisms, and coordinated tissue remodeling processes across multi-system biological models.",
-      "class": "Thymosin beta4-derived peptide (cytoskeletal signaling modulator)",
+      "class": "Thymosin β4–derived peptide (cytoskeletal signaling modulator)",
       "key_features": [
         "High-purity thymosin-derived peptide for cytoskeletal and cellular-migration research",
         "Lyophilized for enhanced structural stability and controlled laboratory use",
@@ -256,7 +256,7 @@
       "inventory": null,
       "product_image_url": "",
       "source": {
-        "header": "TB-500 - 10 MG"
+        "header": "TB-500 — 10 MG"
       }
     },
     {
@@ -297,7 +297,7 @@
       "inventory": null,
       "product_image_url": "",
       "source": {
-        "header": "GHK-CU - 100 MG"
+        "header": "GHK-CU — 100 MG"
       }
     },
     {
@@ -306,10 +306,10 @@
       "strength": "10 MG",
       "display_title": "SEMAX (10 MG)",
       "category_hint": "Peptides",
-      "product_title": "ACTH(4-10)-derived neuropeptide utilized in controlled laboratory environments to investigate neural signaling modulation, synaptic plasticity dynamics, and cognitive pathway regulation - 10 MG",
+      "product_title": "ACTH(4–10)-derived neuropeptide utilized in controlled laboratory environments to investigate neural signaling modulation, synaptic plasticity dynamics, and cognitive pathway regulation — 10 MG",
       "description": "Synthetic neuropeptide analogue utilized in research settings to investigate modulation of neural signaling networks, synaptic adaptability, and higher-order communication pathways involved in cognitive processing and system-level neural regulation.",
       "description_short": "Synthetic neuropeptide analogue utilized in research settings to investigate modulation of neural signaling networks, synaptic adaptability, and higher-order communication pathways involved in cognitive processing and system-level neural regulation.",
-      "class": "ACTH(4-10)-derived heptapeptide (non-hormonal neuro-signaling modulator)",
+      "class": "ACTH(4–10)-derived heptapeptide (non-hormonal neuro-signaling modulator)",
       "key_features": [
         "Neuropeptide compound designed for advanced investigation of central signaling and adaptive neural",
         "pathway modulation",
@@ -340,7 +340,7 @@
       "inventory": null,
       "product_image_url": "",
       "source": {
-        "header": "SEMAX - 10 MG"
+        "header": "SEMAX — 10 MG"
       }
     },
     {
@@ -349,7 +349,7 @@
       "strength": "10 MG",
       "display_title": "SELANK (10 MG)",
       "category_hint": "Peptides",
-      "product_title": "Tuftsin-derived heptapeptide utilized in controlled laboratory environments to investigate neuroregulatory signaling, system-level adaptation, and neuroimmune communication pathways - 10 MG",
+      "product_title": "Tuftsin-derived heptapeptide utilized in controlled laboratory environments to investigate neuroregulatory signaling, system-level adaptation, and neuroimmune communication pathways — 10 MG",
       "description": "Synthetic tuftsin-derived neuropeptide studied in research settings for its role in modulating neuroregulatory signaling networks, adaptive response pathways, and communication between neural and immune system processes.",
       "description_short": "Synthetic tuftsin-derived neuropeptide studied in research settings for its role in modulating neuroregulatory signaling networks, adaptive response pathways, and communication between neural and immune system processes.",
       "class": "Tuftsin-derived heptapeptide (neuroregulatory / neuroimmune signaling modulator)",
@@ -361,7 +361,7 @@
       ],
       "research_focus_non_clinical": [
         "Neuroregulatory signaling balance and central pathway modulation",
-        "Neural-immune system communication and coordinated response signaling",
+        "Neural–immune system communication and coordinated response signaling",
         "Adaptive stress-response pathways and regulatory system stabilization",
         "Gene-expression signaling associated with system-level neural and immune integration"
       ],
@@ -383,7 +383,7 @@
       "inventory": null,
       "product_image_url": "",
       "source": {
-        "header": "SELANK - 10 MG"
+        "header": "SELANK — 10 MG"
       }
     },
     {
@@ -392,7 +392,7 @@
       "strength": "10 MG",
       "display_title": "MOTS-C (10 MG)",
       "category_hint": "Peptides",
-      "product_title": "Mitochondria-encoded peptide utilized in controlled laboratory environments to investigate cellular energy regulation, metabolic signaling pathways, and bioenergetic adaptation mechanisms - 10 MG",
+      "product_title": "Mitochondria-encoded peptide utilized in controlled laboratory environments to investigate cellular energy regulation, metabolic signaling pathways, and bioenergetic adaptation mechanisms — 10 MG",
       "description": "Endogenous mitochondria-encoded peptide studied in research settings for its role in regulating cellular energy balance, metabolic signaling coordination, and adaptive bioenergetic responses across complex biological systems.",
       "description_short": "Endogenous mitochondria-encoded peptide studied in research settings for its role in regulating cellular energy balance, metabolic signaling coordination, and adaptive bioenergetic responses across complex biological systems.",
       "class": "Mitochondria-encoded peptide (bioenergetic and metabolic signaling modulator)",
@@ -426,7 +426,7 @@
       "inventory": null,
       "product_image_url": "",
       "source": {
-        "header": "MOTS-C - 10 MG"
+        "header": "MOTS-C — 10 MG"
       }
     },
     {
@@ -436,8 +436,8 @@
       "display_title": "PT-141 (10 MG)",
       "category_hint": "Peptides",
       "product_title": "",
-      "description": "PT-141 (Bremelanotide) - Melanocortin Signaling Peptide PT-141 is a synthetic peptide investigated in neuroendocrine signaling research, with particular focus on melanocortin receptor pathways. It is utilized in laboratory models to evaluate central signaling activity and receptor-mediated biological responses.",
-      "description_short": "PT-141 (Bremelanotide) - Melanocortin Signaling Peptide PT-141 is a synthetic peptide investigated in neuroendocrine signaling research, with particular focus on melanocortin receptor pathways.",
+      "description": "PT-141 (Bremelanotide) — Melanocortin Signaling Peptide PT-141 is a synthetic peptide investigated in neuroendocrine signaling research, with particular focus on melanocortin receptor pathways. It is utilized in laboratory models to evaluate central signaling activity and receptor-mediated biological responses.",
+      "description_short": "PT-141 (Bremelanotide) — Melanocortin Signaling Peptide PT-141 is a synthetic peptide investigated in neuroendocrine signaling research, with particular focus on melanocortin receptor pathways.",
       "class": "Melanocortin receptor agonist",
       "key_features": [
         "Synthetic melanocortin analog used in receptor pathway research",
@@ -467,7 +467,7 @@
       "inventory": null,
       "product_image_url": "",
       "source": {
-        "header": "PT-141 - 10 MG"
+        "header": "PT-141 — 10 MG"
       }
     },
     {
@@ -477,8 +477,8 @@
       "display_title": "EPITALON (10 MG)",
       "category_hint": "Peptides",
       "product_title": "",
-      "description": "Epitalon - Cellular Longevity Research Peptide Epitalon is a synthetic tetrapeptide investigated in cellular aging and regulatory signaling research. It is commonly utilized in laboratory models examining genomic stability, cellular lifespan processes, and molecular responses associated with aging-related pathways.",
-      "description_short": "Epitalon - Cellular Longevity Research Peptide Epitalon is a synthetic tetrapeptide investigated in cellular aging and regulatory signaling research.",
+      "description": "Epitalon — Cellular Longevity Research Peptide Epitalon is a synthetic tetrapeptide investigated in cellular aging and regulatory signaling research. It is commonly utilized in laboratory models examining genomic stability, cellular lifespan processes, and molecular responses associated with aging-related pathways.",
+      "description_short": "Epitalon — Cellular Longevity Research Peptide Epitalon is a synthetic tetrapeptide investigated in cellular aging and regulatory signaling research.",
       "class": "Synthetic tetrapeptide",
       "key_features": [
         "Synthetic tetrapeptide studied in cellular longevity and signaling research",
@@ -508,7 +508,7 @@
       "inventory": null,
       "product_image_url": "",
       "source": {
-        "header": "EPITALON - 10 MG"
+        "header": "EPITALON — 10 MG"
       }
     },
     {
@@ -518,8 +518,8 @@
       "display_title": "SS-31 (10 MG)",
       "category_hint": "Peptides",
       "product_title": "",
-      "description": "SS-31 - Mitochondrial Function Research Peptide SS-31 is a synthetic peptide investigated in mitochondrial function and cellular energy regulation research. It is commonly utilized in laboratory models exploring oxidative stress responses, membrane stability, and intracellular energy dynamics.",
-      "description_short": "SS-31 - Mitochondrial Function Research Peptide SS-31 is a synthetic peptide investigated in mitochondrial function and cellular energy regulation research.",
+      "description": "SS-31 — Mitochondrial Function Research Peptide SS-31 is a synthetic peptide investigated in mitochondrial function and cellular energy regulation research. It is commonly utilized in laboratory models exploring oxidative stress responses, membrane stability, and intracellular energy dynamics.",
+      "description_short": "SS-31 — Mitochondrial Function Research Peptide SS-31 is a synthetic peptide investigated in mitochondrial function and cellular energy regulation research.",
       "class": "Mitochria-targeting peptide",
       "key_features": [
         "Mitochondria-targeted peptide studied in bioenergetic signaling research",
@@ -549,7 +549,7 @@
       "inventory": null,
       "product_image_url": "",
       "source": {
-        "header": "SS-31 - 10 MG"
+        "header": "SS-31 — 10 MG"
       }
     },
     {
@@ -559,8 +559,8 @@
       "display_title": "GLOW BLEND (70 MG)",
       "category_hint": "Blends",
       "product_title": "",
-      "description": "GLOW - Multi-Peptide Research Blend GLOW is a combination peptide system formulated for laboratory research focused on cellular signaling interactions and multi-pathway dynamics. This blend is commonly utilized in experimental models exploring coordinated cellular processes and structural signaling environments.",
-      "description_short": "GLOW - Multi-Peptide Research Blend GLOW is a combination peptide system formulated for laboratory research focused on cellular signaling interactions and multi-pathway dynamics.",
+      "description": "GLOW — Multi-Peptide Research Blend GLOW is a combination peptide system formulated for laboratory research focused on cellular signaling interactions and multi-pathway dynamics. This blend is commonly utilized in experimental models exploring coordinated cellular processes and structural signaling environments.",
+      "description_short": "GLOW — Multi-Peptide Research Blend GLOW is a combination peptide system formulated for laboratory research focused on cellular signaling interactions and multi-pathway dynamics.",
       "class": "Multi-peptide research blend",
       "key_features": [
         "Multi-peptide research blend designed for integrated pathway analysis",
@@ -590,7 +590,7 @@
       "inventory": null,
       "product_image_url": "",
       "source": {
-        "header": "GLOW BLEND - 70 MG"
+        "header": "GLOW BLEND — 70 MG"
       }
     },
     {
@@ -600,8 +600,8 @@
       "display_title": "KLOW BLEND (80 MG)",
       "category_hint": "Blends",
       "product_title": "",
-      "description": "KLOW - Multi-Peptide Research System KLOW is a composite peptide formulation developed for laboratory research focused on complex cellular signaling interactions and multi-pathway dynamics. This blend is utilized in experimental environments exploring coordinated signaling systems across multiple peptide components.",
-      "description_short": "KLOW - Multi-Peptide Research System KLOW is a composite peptide formulation developed for laboratory research focused on complex cellular signaling interactions and multi-pathway dynamics.",
+      "description": "KLOW — Multi-Peptide Research System KLOW is a composite peptide formulation developed for laboratory research focused on complex cellular signaling interactions and multi-pathway dynamics. This blend is utilized in experimental environments exploring coordinated signaling systems across multiple peptide components.",
+      "description_short": "KLOW — Multi-Peptide Research System KLOW is a composite peptide formulation developed for laboratory research focused on complex cellular signaling interactions and multi-pathway dynamics.",
       "class": "Multi-peptide research blend",
       "key_features": [
         "Multi-peptide research blend designed for cross-pathway interaction analysis",
@@ -631,7 +631,7 @@
       "inventory": null,
       "product_image_url": "",
       "source": {
-        "header": "KLOW BLEND - 80 MG"
+        "header": "KLOW BLEND — 80 MG"
       }
     },
     {
@@ -641,8 +641,8 @@
       "display_title": "TB/BPC BLEND (20 MG)",
       "category_hint": "Blends",
       "product_title": "",
-      "description": "TB/BPC - Dual-Peptide Research System TB/BPC is a combination peptide formulation utilized in laboratory research focused on cellular signaling interactions and coordinated pathway dynamics. This blend is commonly explored in experimental models evaluating multi-component signaling environments.",
-      "description_short": "TB/BPC - Dual-Peptide Research System TB/BPC is a combination peptide formulation utilized in laboratory research focused on cellular signaling interactions and coordinated pathway dynamics.",
+      "description": "TB/BPC — Dual-Peptide Research System TB/BPC is a combination peptide formulation utilized in laboratory research focused on cellular signaling interactions and coordinated pathway dynamics. This blend is commonly explored in experimental models evaluating multi-component signaling environments.",
+      "description_short": "TB/BPC — Dual-Peptide Research System TB/BPC is a combination peptide formulation utilized in laboratory research focused on cellular signaling interactions and coordinated pathway dynamics.",
       "class": "Multi-peptide research blend",
       "key_features": [
         "Dual-peptide research blend designed for pathway interaction analysis",
@@ -672,7 +672,7 @@
       "inventory": null,
       "product_image_url": "",
       "source": {
-        "header": "TB/BPC BLEND - 20 MG"
+        "header": "TB/BPC BLEND — 20 MG"
       }
     },
     {
@@ -682,8 +682,8 @@
       "display_title": "CJC/IPA BLEND (10 MG)",
       "category_hint": "Blends",
       "product_title": "",
-      "description": "CJC/IPA - Dual-Peptide Research System CJC/IPA is a combined peptide formulation studied in laboratory environments focused on signaling pathway modulation and interaction dynamics. It is commonly utilized in research exploring coordinated peptide signaling mechanisms.",
-      "description_short": "CJC/IPA - Dual-Peptide Research System CJC/IPA is a combined peptide formulation studied in laboratory environments focused on signaling pathway modulation and interaction dynamics.",
+      "description": "CJC/IPA — Dual-Peptide Research System CJC/IPA is a combined peptide formulation studied in laboratory environments focused on signaling pathway modulation and interaction dynamics. It is commonly utilized in research exploring coordinated peptide signaling mechanisms.",
+      "description_short": "CJC/IPA — Dual-Peptide Research System CJC/IPA is a combined peptide formulation studied in laboratory environments focused on signaling pathway modulation and interaction dynamics.",
       "class": "Multi-peptide research blend",
       "key_features": [
         "Dual-peptide research blend for signaling pathway analysis",
@@ -713,7 +713,7 @@
       "inventory": null,
       "product_image_url": "",
       "source": {
-        "header": "CJC/IPA BLEND - 10 MG"
+        "header": "CJC/IPA BLEND — 10 MG"
       }
     },
     {
@@ -723,8 +723,8 @@
       "display_title": "5-AMINO-1MQ",
       "category_hint": "Research Compounds & Solutions",
       "product_title": "",
-      "description": "5-AMINO-1MQ - Small-Molecule Research Compound 5-Amino-1MQ is a small-molecule compound utilized in laboratory research focused on cellular signaling pathways and enzyme-related system dynamics. It is commonly incorporated into experimental models exploring regulatory processes at the cellular level.",
-      "description_short": "5-AMINO-1MQ - Small-Molecule Research Compound 5-Amino-1MQ is a small-molecule compound utilized in laboratory research focused on cellular signaling pathways and enzyme-related system dynamics.",
+      "description": "5-AMINO-1MQ — Small-Molecule Research Compound 5-Amino-1MQ is a small-molecule compound utilized in laboratory research focused on cellular signaling pathways and enzyme-related system dynamics. It is commonly incorporated into experimental models exploring regulatory processes at the cellular level.",
+      "description_short": "5-AMINO-1MQ — Small-Molecule Research Compound 5-Amino-1MQ is a small-molecule compound utilized in laboratory research focused on cellular signaling pathways and enzyme-related system dynamics.",
       "class": "Small-molecule research compound",
       "key_features": [
         "Small-molecule research compound studied in enzyme-related pathway analysis",
@@ -754,7 +754,7 @@
       "inventory": null,
       "product_image_url": "",
       "source": {
-        "header": "5-AMINO-1MQ - Research Compound"
+        "header": "5-AMINO-1MQ — Research Compound"
       }
     },
     {
@@ -764,8 +764,8 @@
       "display_title": "SERMORELIN (10 MG)",
       "category_hint": "Peptides",
       "product_title": "",
-      "description": "Sermorelin - Research Peptide Sermorelin is a synthetic peptide utilized in laboratory research focused on signaling pathway interactions and regulatory system dynamics. It is commonly incorporated into experimental models exploring peptide-mediated communication processes.",
-      "description_short": "Sermorelin - Research Peptide Sermorelin is a synthetic peptide utilized in laboratory research focused on signaling pathway interactions and regulatory system dynamics.",
+      "description": "Sermorelin — Research Peptide Sermorelin is a synthetic peptide utilized in laboratory research focused on signaling pathway interactions and regulatory system dynamics. It is commonly incorporated into experimental models exploring peptide-mediated communication processes.",
+      "description_short": "Sermorelin — Research Peptide Sermorelin is a synthetic peptide utilized in laboratory research focused on signaling pathway interactions and regulatory system dynamics.",
       "class": "Research peptide",
       "key_features": [
         "Synthetic peptide utilized in signaling pathway research",
@@ -795,7 +795,7 @@
       "inventory": null,
       "product_image_url": "",
       "source": {
-        "header": "SERMORELIN - 10 MG"
+        "header": "SERMORELIN — 10 MG"
       }
     },
     {
@@ -805,8 +805,8 @@
       "display_title": "GLP-3R (10 MG)",
       "category_hint": "Peptides",
       "product_title": "",
-      "description": "GLP-3R - Receptor-Focused Research Peptide GLP-3R is a synthetic peptide utilized in laboratory research focused on receptor-mediated signaling and cellular communication dynamics. It is commonly incorporated into experimental models exploring ligand-receptor interactions and coordinated pathway activity within controlled research environments.",
-      "description_short": "GLP-3R - Receptor-Focused Research Peptide GLP-3R is a synthetic peptide utilized in laboratory research focused on receptor-mediated signaling and cellular communication dynamics.",
+      "description": "GLP-3R — Receptor-Focused Research Peptide GLP-3R is a synthetic peptide utilized in laboratory research focused on receptor-mediated signaling and cellular communication dynamics. It is commonly incorporated into experimental models exploring ligand–receptor interactions and coordinated pathway activity within controlled research environments.",
+      "description_short": "GLP-3R — Receptor-Focused Research Peptide GLP-3R is a synthetic peptide utilized in laboratory research focused on receptor-mediated signaling and cellular communication dynamics.",
       "class": "Research peptide",
       "key_features": [
         "Synthetic peptide designed for receptor-mediated pathway research",
@@ -816,7 +816,7 @@
       "research_focus_non_clinical": [],
       "research_applications_non_clinical": [
         "Receptor-mediated signaling pathway analysis",
-        "Ligand-receptor interaction and binding studies",
+        "Ligand–receptor interaction and binding studies",
         "Cellular communication and pathway coordination research",
         "Multi-pathway signaling integration models"
       ],
@@ -837,7 +837,7 @@
       "inventory": null,
       "product_image_url": "",
       "source": {
-        "header": "GLP-3R - 10 MG"
+        "header": "GLP-3R — 10 MG"
       }
     },
     {
@@ -874,7 +874,7 @@
       "inventory": null,
       "product_image_url": "",
       "source": {
-        "header": "NAD+ - 500 MG"
+        "header": "NAD+ — 500 MG"
       }
     },
     {
@@ -911,7 +911,7 @@
       "inventory": null,
       "product_image_url": "",
       "source": {
-        "header": "NAD+ - Research Coenzyme Compound"
+        "header": "NAD+ — Research Coenzyme Compound"
       }
     },
     {
@@ -948,7 +948,7 @@
       "inventory": null,
       "product_image_url": "",
       "source": {
-        "header": "KPV - 10 MG"
+        "header": "KPV — 10 MG"
       }
     },
     {
@@ -965,7 +965,7 @@
       "research_focus_non_clinical": [],
       "research_applications_non_clinical": [
         "Cellular signaling pathway analysis",
-        "Ligand-receptor interaction studies",
+        "Ligand–receptor interaction studies",
         "Multi-pathway coordination research",
         "Cellular communication models"
       ],
@@ -986,7 +986,7 @@
       "inventory": null,
       "product_image_url": "",
       "source": {
-        "header": "KPV - Research Tripeptide"
+        "header": "KPV — Research Tripeptide"
       }
     },
     {
@@ -996,8 +996,8 @@
       "display_title": "GLUTATHIONE (1500 MG)",
       "category_hint": "Research Compounds & Solutions",
       "product_title": "",
-      "description": "Glutathione - Research Tripeptide (GSH) Glutathione is a tripeptide utilized in laboratory research focused on cellular processes and intracellular pathway dynamics. It is commonly incorporated into experimental models evaluating redox-related signaling and coordinated cellular interactions.",
-      "description_short": "Glutathione - Research Tripeptide (GSH) Glutathione is a tripeptide utilized in laboratory research focused on cellular processes and intracellular pathway dynamics.",
+      "description": "Glutathione — Research Tripeptide (GSH) Glutathione is a tripeptide utilized in laboratory research focused on cellular processes and intracellular pathway dynamics. It is commonly incorporated into experimental models evaluating redox-related signaling and coordinated cellular interactions.",
+      "description_short": "Glutathione — Research Tripeptide (GSH) Glutathione is a tripeptide utilized in laboratory research focused on cellular processes and intracellular pathway dynamics.",
       "class": "Research tripeptide",
       "key_features": [
         "Tripeptide research compound utilized in cellular pathway analysis",
@@ -1028,7 +1028,7 @@
       "inventory": null,
       "product_image_url": "",
       "source": {
-        "header": "GLUTATHIONE - 1500 MG"
+        "header": "GLUTATHIONE — 1500 MG"
       }
     },
     {
@@ -1038,8 +1038,8 @@
       "display_title": "LIPO-C (10 ML)",
       "category_hint": "Research Compounds & Solutions",
       "product_title": "",
-      "description": "Lipo-C - Multi-Compound Research Solution Lipo-C is a multi-component formulation utilized in laboratory research focused on cellular processes and pathway interaction dynamics. It is commonly incorporated into experimental models evaluating multi-pathway coordination and intracellular signaling behavior.",
-      "description_short": "Lipo-C - Multi-Compound Research Solution Lipo-C is a multi-component formulation utilized in laboratory research focused on cellular processes and pathway interaction dynamics.",
+      "description": "Lipo-C — Multi-Compound Research Solution Lipo-C is a multi-component formulation utilized in laboratory research focused on cellular processes and pathway interaction dynamics. It is commonly incorporated into experimental models evaluating multi-pathway coordination and intracellular signaling behavior.",
+      "description_short": "Lipo-C — Multi-Compound Research Solution Lipo-C is a multi-component formulation utilized in laboratory research focused on cellular processes and pathway interaction dynamics.",
       "class": "Multi-compound research formulation",
       "key_features": [
         "Multi-compound research formulation for pathway analysis",
@@ -1070,7 +1070,7 @@
       "inventory": null,
       "product_image_url": "",
       "source": {
-        "header": "LIPO-C - 10 ML"
+        "header": "LIPO-C — 10 ML"
       }
     },
     {
@@ -1080,8 +1080,8 @@
       "display_title": "MIC LIPO-B12 (10 ML)",
       "category_hint": "Research Compounds & Solutions",
       "product_title": "",
-      "description": "MIC LIPO-B12 - Multi-Compound Research Solution MIC LIPO-B12 is a multi-component formulation utilized in laboratory research focused on cellular processes and pathway interaction dynamics. It is commonly incorporated into experimental models evaluating coordinated intracellular signaling and multi-pathway systems.",
-      "description_short": "MIC LIPO-B12 - Multi-Compound Research Solution MIC LIPO-B12 is a multi-component formulation utilized in laboratory research focused on cellular processes and pathway interaction dynamics.",
+      "description": "MIC LIPO-B12 — Multi-Compound Research Solution MIC LIPO-B12 is a multi-component formulation utilized in laboratory research focused on cellular processes and pathway interaction dynamics. It is commonly incorporated into experimental models evaluating coordinated intracellular signaling and multi-pathway systems.",
+      "description_short": "MIC LIPO-B12 — Multi-Compound Research Solution MIC LIPO-B12 is a multi-component formulation utilized in laboratory research focused on cellular processes and pathway interaction dynamics.",
       "class": "Multi-compound research formulation",
       "key_features": [
         "Multi-compound research formulation for pathway analysis",
@@ -1112,7 +1112,7 @@
       "inventory": null,
       "product_image_url": "",
       "source": {
-        "header": "MIC LIPO-B12 - 10 ML"
+        "header": "MIC LIPO-B12 — 10 ML"
       }
     },
     {
@@ -1122,8 +1122,8 @@
       "display_title": "KISSPEPTIN (10 MG)",
       "category_hint": "Peptides",
       "product_title": "",
-      "description": "Kisspeptin - Reproductive Signaling Peptide Kisspeptin is a regulatory peptide widely studied in neuroendocrine signaling, particularly in pathways governing reproductive hormone communication. It plays a central role in research models examining hypothalamic signaling and endocrine coordination.",
-      "description_short": "Kisspeptin - Reproductive Signaling Peptide Kisspeptin is a regulatory peptide widely studied in neuroendocrine signaling, particularly in pathways governing reproductive hormone communication.",
+      "description": "Kisspeptin — Reproductive Signaling Peptide Kisspeptin is a regulatory peptide widely studied in neuroendocrine signaling, particularly in pathways governing reproductive hormone communication. It plays a central role in research models examining hypothalamic signaling and endocrine coordination.",
+      "description_short": "Kisspeptin — Reproductive Signaling Peptide Kisspeptin is a regulatory peptide widely studied in neuroendocrine signaling, particularly in pathways governing reproductive hormone communication.",
       "class": "Regulatory neuropeptide",
       "key_features": [
         "Regulatory neuropeptide studied in reproductive signaling pathways",
@@ -1153,7 +1153,7 @@
       "inventory": null,
       "product_image_url": "",
       "source": {
-        "header": "KISSPEPTIN - 10 MG"
+        "header": "KISSPEPTIN — 10 MG"
       }
     },
     {
@@ -1163,8 +1163,8 @@
       "display_title": "EPITALON (10 MG)",
       "category_hint": "Peptides",
       "product_title": "",
-      "description": "Epitalon - Cellular Longevity Research Peptide Epitalon is a synthetic tetrapeptide investigated in cellular aging and regulatory signaling research. It is commonly utilized in laboratory models examining genomic stability, cellular lifespan processes, and molecular responses associated with aging-related pathways.",
-      "description_short": "Epitalon - Cellular Longevity Research Peptide Epitalon is a synthetic tetrapeptide investigated in cellular aging and regulatory signaling research.",
+      "description": "Epitalon — Cellular Longevity Research Peptide Epitalon is a synthetic tetrapeptide investigated in cellular aging and regulatory signaling research. It is commonly utilized in laboratory models examining genomic stability, cellular lifespan processes, and molecular responses associated with aging-related pathways.",
+      "description_short": "Epitalon — Cellular Longevity Research Peptide Epitalon is a synthetic tetrapeptide investigated in cellular aging and regulatory signaling research.",
       "class": "Synthetic tetrapeptide",
       "key_features": [
         "Synthetic tetrapeptide studied in cellular longevity and signaling research",
@@ -1194,7 +1194,7 @@
       "inventory": null,
       "product_image_url": "",
       "source": {
-        "header": "EPITALON - 10 MG"
+        "header": "EPITALON — 10 MG"
       }
     },
     {
@@ -1204,8 +1204,8 @@
       "display_title": "SS-31 (10 MG)",
       "category_hint": "Peptides",
       "product_title": "",
-      "description": "SS-31 - Mitochondrial Function Research Peptide SS-31 is a synthetic peptide investigated in mitochondrial function and cellular energy regulation research. It is commonly utilized in laboratory models exploring oxidative stress responses, membrane stability, and intracellular energy dynamics.",
-      "description_short": "SS-31 - Mitochondrial Function Research Peptide SS-31 is a synthetic peptide investigated in mitochondrial function and cellular energy regulation research.",
+      "description": "SS-31 — Mitochondrial Function Research Peptide SS-31 is a synthetic peptide investigated in mitochondrial function and cellular energy regulation research. It is commonly utilized in laboratory models exploring oxidative stress responses, membrane stability, and intracellular energy dynamics.",
+      "description_short": "SS-31 — Mitochondrial Function Research Peptide SS-31 is a synthetic peptide investigated in mitochondrial function and cellular energy regulation research.",
       "class": "Mitochria-targeting peptide",
       "key_features": [
         "Mitochondria-targeted peptide studied in bioenergetic signaling research",
@@ -1235,7 +1235,7 @@
       "inventory": null,
       "product_image_url": "",
       "source": {
-        "header": "SS-31 - 10 MG"
+        "header": "SS-31 — 10 MG"
       }
     }
   ]
