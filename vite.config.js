@@ -3,16 +3,23 @@ import react from '@vitejs/plugin-react'
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
-  const isBeta = mode === 'beta'
+  const isBeta  = mode === 'beta'
   const isPages = mode === 'pages'
+  const isAlpha = mode === 'alpha'
 
   return {
-    // GitHub Pages (project pages) lives under `/<repo-name>/`.
-    // Use an explicit base so BrowserRouter can mount correctly without hash routing.
+    // GitHub Pages lives under `/<repo-name>/`.
+    // Alpha (cPanel) and production both use root `/`.
     base: isPages ? '/PEPTQ_STABLE/' : (isBeta ? './' : '/'),
     plugins: [react()],
     build: {
-      outDir: isBeta ? 'BETA_WEBSITE_ONLY_FOLDER' : 'dist',
+      // alpha → outputs directly into the PEPTQ ALPHA folder for cPanel upload
+      outDir: isBeta
+        ? 'BETA_WEBSITE_ONLY_FOLDER'
+        : isAlpha
+          ? '../PEPTQ ALPHA'
+          : 'dist',
+      emptyOutDir: false,
       chunkSizeWarningLimit: 600,
       rollupOptions: {
         output: {

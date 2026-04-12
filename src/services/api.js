@@ -30,3 +30,33 @@ export const GOOGLE_SCRIPT_URL = normalizeScriptUrl(import.meta.env.VITE_GOOGLE_
 export const APPS_SCRIPT_COMMAND_URL = GOOGLE_SCRIPT_URL;
 export const COMING_SOON_SCRIPT_URL = normalizeScriptUrl(import.meta.env.VITE_COMING_SOON_SCRIPT_URL || APPS_SCRIPT_COMMAND_URL);
 export const PORTAL_BRIDGE_URL = normalizeScriptUrl(import.meta.env.VITE_PORTAL_BRIDGE_URL || APPS_SCRIPT_COMMAND_URL);
+
+// ── Alpha / cPanel API Mode ───────────────────────────────────────────────────
+// When VITE_API_MODE=cpanel, data commands route to PHP endpoints on the cPanel
+// server. Email triggers still route to Google Apps Script (unchanged).
+export const IS_CPANEL_MODE = String(import.meta.env.VITE_API_MODE || '').trim().toLowerCase() === 'cpanel';
+export const CPANEL_API_BASE = String(import.meta.env.VITE_CPANEL_API_BASE || '/api').replace(/\/$/, '');
+
+/**
+ * Returns the correct endpoint URL for a given resource type.
+ *  data commands  → /api/*.php  (cPanel mode) | Apps Script (Stable/Beta)
+ *  email commands → Always Apps Script regardless of mode
+ *
+ * Usage:
+ *   import { getApiUrl } from './api';
+ *   const url = getApiUrl('catalog');  // '/api/catalog.php' or GAS URL
+ */
+export const getApiUrl = (resource = '') => {
+	if (!IS_CPANEL_MODE) return APPS_SCRIPT_COMMAND_URL;
+	const map = {
+		catalog:     `${CPANEL_API_BASE}/catalog.php`,
+		lots:        `${CPANEL_API_BASE}/lots.php`,
+		inventory:   `${CPANEL_API_BASE}/inventory.php`,
+		members:     `${CPANEL_API_BASE}/members.php`,
+		orders:      `${CPANEL_API_BASE}/orders.php`,
+		upload:      `${CPANEL_API_BASE}/upload.php`,
+		'del-media': `${CPANEL_API_BASE}/delete-media.php`,
+		auth:        `${CPANEL_API_BASE}/auth.php`,
+	};
+	return map[resource] || APPS_SCRIPT_COMMAND_URL;
+};

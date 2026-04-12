@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { 
   ShieldCheck, 
@@ -9,16 +9,31 @@ import {
   ArrowRight,
   ExternalLink,
   Loader2,
-  AlertCircle
+  AlertCircle,
+  Lock
 } from 'lucide-react';
 import { catalogService } from '../services/catalogService';
 import { toEmbeddableGoogleDriveUrl } from '../utils/driveLinks';
+
+// ── Auth helper ───────────────────────────────────────────────────────────────
+const AUTH_KEY = 'peptq_auth_v1';
+const APPROVED_ROLES = new Set(['MEMBER', 'VIP', 'OWNER', 'INSTITUTIONAL']);
+const getSessionRole = () => {
+  try {
+    const raw = window.localStorage.getItem(AUTH_KEY);
+    const session = raw ? JSON.parse(raw) : null;
+    return String(session?.role || 'GUEST').trim().toUpperCase();
+  } catch { return 'GUEST'; }
+};
 
 const VerifyPage = () => {
   const { lotId } = useParams();
   const [loading, setLoading] = useState(true);
   const [record, setRecord] = useState(null);
   const [error, setError] = useState('');
+  const role      = getSessionRole();
+  const isMember  = APPROVED_ROLES.has(role);
+  const isOwner   = role === 'OWNER';
 
   useEffect(() => {
     const fetchLot = async () => {
@@ -148,33 +163,60 @@ const VerifyPage = () => {
         {/* COA Preview / Link */}
         <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-700">
            {record.coa_url ? (
-             <div className="group relative overflow-hidden rounded-4xl border-2 border-brand-navy/10 dark:border-white/10 bg-black aspect-3/4 shadow-2xl transition-all hover:border-brand-orange/50">                {isPdf ? (
-                  <iframe
-                    src={coaEmbedUrl || coaUrl}
-                    title="Certificate of Analysis"
-                    className="w-full h-full"
-                    style={{ border: 0 }}
-                  />
-                ) : (
-                  <img
-                    src={coaEmbedUrl || coaUrl}
-                    alt="Certificate of Analysis"
-                    className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity"
-                  />
-                )}                <div className="absolute inset-x-0 bottom-0 p-8 bg-linear-to-t from-black/80 to-transparent">
-                   <p className="text-[10px] font-black uppercase tracking-widest text-white/60 mb-2">Primary Lab Certificate</p>
-                   <a 
-                     href={coaUrl} 
-                     target="_blank" 
-                     rel="noopener noreferrer" 
-                     className="inline-flex items-center gap-2 text-white font-black uppercase tracking-widest text-xs group-hover:text-brand-orange transition-colors"
+             <div className="group relative overflow-hidden rounded-4xl border-2 border-brand-navy/10 dark:border-white/10 bg-black aspect-3/4 shadow-2xl transition-all hover:border-brand-orange/50">
+               {/* ── Member gate: blur PDF for non-members ── */}
+               {!isMember && (
+                 <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-brand-navy/80 backdrop-blur-md px-8 text-center">
+                   <div className="h-14 w-14 rounded-full bg-brand-orange/20 flex items-center justify-center mb-4">
+                     <Lock size={28} className="text-brand-orange" />
+                   </div>
+                   <p className="text-xs font-black uppercase tracking-[0.2em] text-white mb-2">Members Only</p>
+                   <p className="text-[11px] text-white/60 mb-6 leading-relaxed">
+                     Certificate of Analysis documents are restricted to verified PEPTQ members.
+                   </p>
+                   <Link
+                     to="/apply"
+                     className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-brand-orange text-white text-xs font-black uppercase tracking-widest hover:bg-brand-orange/90 transition-colors"
                    >
-                     View Full Document <ExternalLink size={14} />
-                   </a>
-                </div>
-                <div className="absolute top-6 right-6 h-10 w-10 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center text-white border border-white/20">
-                    <Search size={18} />
-                </div>
+                     Apply for Access <ArrowRight size={13} />
+                   </Link>
+                 </div>
+               )}
+               {/* COA Document */}
+               <div className={!isMember ? 'blur-sm pointer-events-none select-none' : ''}>
+                 {isPdf ? (
+                   <iframe
+                     src={coaEmbedUrl || coaUrl}
+                     title="Certificate of Analysis"
+                     className="w-full h-full"
+                     style={{ border: 0 }}
+                   />
+                 ) : (
+                   <img
+                     src={coaEmbedUrl || coaUrl}
+                     alt="Certificate of Analysis"
+                     className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity"
+                   />
+                 )}
+               </div>
+               {isMember && (
+                 <>
+                   <div className="absolute inset-x-0 bottom-0 p-8 bg-linear-to-t from-black/80 to-transparent">
+                     <p className="text-[10px] font-black uppercase tracking-widest text-white/60 mb-2">Primary Lab Certificate</p>
+                     <a
+                       href={coaUrl}
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       className="inline-flex items-center gap-2 text-white font-black uppercase tracking-widest text-xs group-hover:text-brand-orange transition-colors"
+                     >
+                       View Full Document <ExternalLink size={14} />
+                     </a>
+                   </div>
+                   <div className="absolute top-6 right-6 h-10 w-10 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center text-white border border-white/20">
+                     <Search size={18} />
+                   </div>
+                 </>
+               )}
              </div>
            ) : (
              <div className="rounded-4xl border-2 border-dashed border-brand-navy/15 dark:border-white/10 flex flex-col items-center justify-center p-12 text-center aspect-3/4">
